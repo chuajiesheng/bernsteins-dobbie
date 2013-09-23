@@ -49,31 +49,6 @@
                         &nbsp;
                       </div>
                     </div>
-                    <script type="text/javascript">
-                      $('#inputNext').on("click",function() {
-
-                      $('#inputNext').prop('disabled', true);
-                      $('#inputAttributes').prop('disabled', true);
-
-                      var attr = $('#inputAttributes').val();
-                      var arrayOfStrings = attr.split(',');
-
-                      for (var i = 0; i < arrayOfStrings.length; i++) {
-                        var exist = false;
-                        for (var j = 0; j < uniqueElement.length; j++) {
-                          if (arrayOfStrings[i] == uniqueElement[j]) {
-                            exist = true;
-                          }
-                        }
-                        if (!exist && arrayOfStrings[i].length > 0) {
-                          uniqueElement[uniqueElement.length] = arrayOfStrings[i];
-                        }
-                      }
-
-                      $('#unique').text("Attributes: " + uniqueElement);
-                      });
-
-                      </script>
                   </div>
                 </div>
               </form>
@@ -87,9 +62,29 @@
           <h2>Functional Dependency</h2>
         </div>
         <div class="span11 offset1" id="fds">
-
-
+          <div class="row"><div>&nbsp;</div></div>
+          <div class="row">
+            <div class="span3">
+              <select multiple="multiple" class="span3" id="fdLHS" disabled>
+              </select>
+            </div>
+            <div class="span1 text-center">
+              <h1>&rarr;</h1>
+            </div>
+            <div class="span3">
+              <select multiple="multiple" class="span3" id="fdRHS" disabled>
+              </select>
+            </div>
+          </div>
+          <div class="row"><div>&nbsp;</div></div>
+          <div class="row">
+            <div class="span7">
+              <button type="button" class="btn pull-right" id="addFd" disabled>Add Functional Dependency</button>
+            </div>
+          </div>
+          <div class="row"><div>&nbsp;</div></div>
         </div>
+        <script type="text/javascript" src="attribute.js"></script>
       </div>
       <div class="row"><div>&nbsp;</div></div>
       <div class="row">
