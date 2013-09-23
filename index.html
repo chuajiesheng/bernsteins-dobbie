@@ -1,1 +1,59 @@
-
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bernstein's Algorithm Teaching Aid</title>
+    <link rel="stylesheet" type="text/css" href="css/bootmetro.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro-responsive.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro-icons.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro-ui-light.css">
+    <link rel="shortcut icon" href="ico/favicon.ico">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/modernizr-2.6.2.min.js"></script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="span11 offset1">
+        <h1>Bernstein's Algorithm</h1>
+      </div>
+    </div>
+    <div class="row"><div>&nbsp;</div></div>
+    <div class="row">
+      <div class="span11 offset1">
+        <h2>Attributes</h2>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+          <div class="span12">
+            <form class="form-horizontal">
+              <div class="control-group">
+                <label class="control-label" for="inputAttributes">Attributes</label>
+                <div class="controls">
+                  <input type="text" id="inputAttributes" placeholder="s#, p#, sname, pname, ...">
+                  <span class="help-block">
+                    Enter the name of the attributes follow but a ',' (comma).
+                  </span>
+                  <script type="text/javascript">
+                    $('#inputAttributes').bind('input', function() {
+                    console.log($(this).val()) // get the current value of the input field.
+                    });
+                  </script>
+                </div>
+              </div>
+      </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row"><div>&nbsp;</div></div>
+    <div class="row">
+      <div class="span11 offset1">
+        <h4>Functional Dependency</h4>
+      </div>
+    </div>
+    <div class="row"><div>&nbsp;</div></div>
+    <div class="row">
+      <div class="span11 offset1">
+        <h4>Multi-valued Dependency</h4>
+      </div>
+    </div>
+  </body>
+</html>
