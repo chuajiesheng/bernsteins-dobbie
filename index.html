@@ -9,6 +9,10 @@
     <link rel="shortcut icon" href="ico/favicon.ico">
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/modernizr-2.6.2.min.js"></script>
+    <script type="text/javascript">
+      // global variables
+      var uniqueElement = [];
+    </script>
   </head>
   <body>
     <div class="row">
@@ -17,49 +21,84 @@
       </div>
     </div>
     <div class="row"><div>&nbsp;</div></div>
-    <form class="form-horizontal">
+
       <div class="row">
         <div class="span11 offset1">
           <h2>Attributes</h2>
           <div class="row">&nbsp;</div>
           <div class="row">
             <div class="span12">
-              <div class="control-group">
-                <label class="control-label" for="inputAttributes">Attributes</label>
-                <div class="controls">
-                  <input type="text" id="inputAttributes" placeholder="sno, pno, sname, pname, ...">
-                  <span class="help-block">
-                    Enter the name of the attributes follow but a ',' (comma).
-                  </span>
-                  <span class="help-block">
-                    Symbols are not allow.
-                  </span>
-                  <script type="text/javascript">
-                    $('#inputAttributes').bind('input', function() {
-                    var inputStr = $(this).val();
-                    var lastChar = (inputStr.charAt(inputStr.length - 1)).toLowerCase();
+              <form class="form-horizontal">
+                <div class="control-group">
+                  <label class="control-label" for="inputAttributes">Attributes</label>
+                  <div class="controls">
+                    <input type="text" id="inputAttributes" placeholder="sno, pno, sname, pname, ...">
+                    <span class="help-block">
+                      Enter the name of the attributes follow but a ',' (comma).
+                    </span>
+                    <span class="help-block">
+                      Symbols are not allow.
+                    </span>
+                    <script type="text/javascript">
+                      $('#inputAttributes').bind('input', function() {
+                      var inputStr = $(this).val();
+                      var lastChar = (inputStr.charAt(inputStr.length - 1)).toLowerCase();
 
-                    var re = /[0-9a-zA-Z]/;
-                    var re2 = /[0-9a-zA-Z,]/;
+                      var re = /[0-9a-zA-Z]/;
+                      var re2 = /[0-9a-zA-Z,]/;
 
-                    if (inputStr.length == 0) {
-                      // does nth
-                    } else if (inputStr.length == 1) {
-                      if (!lastChar.match(re)) {
-                        $(this).val(inputStr.substring(0, inputStr.length -1));
+                      if (inputStr.length == 0) {
+                        // does nth
+                      } else if (inputStr.length == 1) {
+                        if (!lastChar.match(re)) {
+                          $(this).val(inputStr.substring(0, inputStr.length -1));
+                        }
+                      } else {
+                        var last2Char = (inputStr.charAt(inputStr.length -2)).toLowerCase();
+                        if (!(lastChar.match(re2))) {
+                          $(this).val(inputStr.substring(0, inputStr.length - 1));
+                        } else if (last2Char == ',' && lastChar == ',') {
+                          $(this).val(inputStr.substring(0, inputStr.length -1));
+                        }
                       }
-                    } else {
-                      var last2Char = (inputStr.charAt(inputStr.length -2)).toLowerCase();
-                      if (!(lastChar.match(re2))) {
-                        $(this).val(inputStr.substring(0, inputStr.length - 1));
-                      } else if (last2Char == ',' && lastChar == ',') {
-                        $(this).val(inputStr.substring(0, inputStr.length -1));
+                      });
+                    </script>
+                    <div class="row"><div>&nbsp;</div></div>
+                    <button type="button" class="btn" id="inputNext">Next Step</button>
+                    <div class="row"><div>&nbsp;</div></div>
+                    <div class="row">
+                      <div class="span12" id="unique">
+                        &nbsp;
+                      </div>
+                    </div>
+                    <script type="text/javascript">
+                      $('#inputNext').on("click",function() {
+
+                      $('#inputNext').prop('disabled', true);
+                      $('#inputAttributes').prop('disabled', true);
+
+                      var attr = $('#inputAttributes').val();
+                      var arrayOfStrings = attr.split(',');
+
+                      for (var i = 0; i < arrayOfStrings.length; i++) {
+                        var exist = false;
+                        for (var j = 0; j < uniqueElement.length; j++) {
+                          if (arrayOfStrings[i] == uniqueElement[j]) {
+                            exist = true;
+                          }
+                        }
+                        if (!exist && arrayOfStrings[i].length > 0) {
+                          uniqueElement[uniqueElement.length] = arrayOfStrings[i];
+                        }
                       }
-                    }
-                    });
-                  </script>
+
+                      $('#unique').text("Attributes: " + uniqueElement);
+                      });
+
+                      </script>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -67,15 +106,19 @@
       <div class="row"><div>&nbsp;</div></div>
       <div class="row">
         <div class="span11 offset1">
-          <h4>Functional Dependency</h4>
+          <h2>Functional Dependency</h2>
+        </div>
+        <div class="span11 offset1" id="fds">
+
+
         </div>
       </div>
       <div class="row"><div>&nbsp;</div></div>
       <div class="row">
         <div class="span11 offset1">
-          <h4>Multi-valued Dependency</h4>
+          <h2>Multi-valued Dependency</h2>
         </div>
       </div>
-    </form>
+
   </body>
 </html>
