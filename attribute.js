@@ -32,11 +32,26 @@ $('#inputNext').on("click",function() {
         option2.setAttribute("value", uniqueElement[i]);
         option2.appendChild(t2);
         $('#fdRHS').append(option2);
+
+        var option3 = document.createElement('option');
+        var t3 = document.createTextNode(uniqueElement[i]);
+        option3.setAttribute("value", uniqueElement[i]);
+        option3.appendChild(t3);
+        $('#mvdRHS').append(option3);
+
+        var option4 = document.createElement('option');
+        var t4 = document.createTextNode(uniqueElement[i]);
+        option4.setAttribute("value", uniqueElement[i]);
+        option4.appendChild(t4);
+        $('#mvdLHS').append(option4);
     }
 
     $('#fdLHS').prop('disabled', false);
     $('#fdRHS').prop('disabled', false);
     $('#addFd').prop('disabled', false);
 
+    $('#mvdLHS').prop('disabled', false);
+    $('#mvdRHS').prop('disabled', false);
+    $('#addMvd').prop('disabled', false);
 
 });
