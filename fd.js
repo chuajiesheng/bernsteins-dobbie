@@ -42,8 +42,6 @@ $('#fdRHS').on('change', function() {
     });
 });
 
-var fds = [];
-
 $('#addFd').on('click', function () {
     var lhs = [];
     var rhs = [];
