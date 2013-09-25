@@ -1,4 +1,4 @@
-$('#inputNext').on("click",function() {
+$('#inputNext').on('click',function() {
 
     $('#inputNext').prop('disabled', true);
     $('#inputAttributes').prop('disabled', true);
@@ -18,7 +18,7 @@ $('#inputNext').on("click",function() {
         }
     }
 
-    $('#unique').text("Attributes: " + uniqueElement);
+    $('#unique').text('Attributes: ' + uniqueElement);
 
     for (var i = 0; i < uniqueElement.length; i++) {
         var option = document.createElement('option');
@@ -29,19 +29,19 @@ $('#inputNext').on("click",function() {
 
         var option2 = document.createElement('option');
         var t2 = document.createTextNode(uniqueElement[i]);
-        option2.setAttribute("value", uniqueElement[i]);
+        option2.setAttribute('value', uniqueElement[i]);
         option2.appendChild(t2);
         $('#fdRHS').append(option2);
 
         var option3 = document.createElement('option');
         var t3 = document.createTextNode(uniqueElement[i]);
-        option3.setAttribute("value", uniqueElement[i]);
+        option3.setAttribute('value', uniqueElement[i]);
         option3.appendChild(t3);
         $('#mvdRHS').append(option3);
 
         var option4 = document.createElement('option');
         var t4 = document.createTextNode(uniqueElement[i]);
-        option4.setAttribute("value", uniqueElement[i]);
+        option4.setAttribute('value', uniqueElement[i]);
         option4.appendChild(t4);
         $('#mvdLHS').append(option4);
     }
