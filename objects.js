@@ -7,7 +7,7 @@ var Fd = function (lhs, rhs) {
         for (i = 0; i < lhs.length; i++) {
             fd += lhs[i] + ' ';
         }
-        fd += '&rarr; '
+        fd += '&#8594; '
         for (i = 0; i < rhs.length; i++) {
             fd += rhs[i] + ' ';
         }
@@ -26,7 +26,7 @@ var Mvd = function (lhs, rhs) {
         for (i = 0; i < lhs.length; i++) {
             fd += lhs[i] + ' ';
         }
-        fd += '&rarr; '
+        fd += '&#8608; '
         for (i = 0; i < rhs.length; i++) {
             fd += rhs[i] + ' ';
         }
