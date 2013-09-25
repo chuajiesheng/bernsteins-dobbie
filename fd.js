@@ -45,8 +45,25 @@ $('#fdRHS').on('change', function() {
 var fds = [];
 
 $('#addFd').on('click', function () {
-    var lhs = $('#fdLHS option:selected');
-    var rhs = $('#fdRHS option:selected');
-    console.log(lhs);
-    console.log(rhs);
+    var lhs = [];
+    var rhs = [];
+
+    $('#fdLHS option:selected').each(function() {
+        lhs.push(this.value);
+        $(this).prop('selected', false)
+    });
+
+    $('#fdRHS > option:selected').each(function() {
+        rhs.push(this.value);
+        $(this).prop('selected', false)
+    });
+
+    var fd = new Fd(lhs, rhs);
+    // TODO: check for duplicate fds
+    fds.push(fd);
+
+    var span = document.createElement('span');
+    $(span).html(fd.str());
+    $('#fds')[0].appendChild(span);
+    $('#fds')[0].appendChild(document.createElement('br'));
 });
