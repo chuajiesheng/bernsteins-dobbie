@@ -8,40 +8,40 @@ $('#inputNext').on('click',function() {
 
     for (var i = 0; i < arrayOfStrings.length; i++) {
         var exist = false;
-        for (var j = 0; j < uniqueElement.length; j++) {
-            if (arrayOfStrings[i] == uniqueElement[j]) {
+        for (var j = 0; j < attributes.length; j++) {
+            if (arrayOfStrings[i] == attributes[j]) {
                 exist = true;
             }
         }
         if (!exist && arrayOfStrings[i].length > 0) {
-            uniqueElement[uniqueElement.length] = arrayOfStrings[i];
+            attributes[attributes.length] = arrayOfStrings[i];
         }
     }
 
-    $('#unique').text('Attributes: ' + uniqueElement);
+    $('#unique').text('Attributes: ' + attributes);
 
-    for (var i = 0; i < uniqueElement.length; i++) {
+    for (var i = 0; i < attributes.length; i++) {
         var option = document.createElement('option');
-        var t = document.createTextNode(uniqueElement[i]);
-        option.setAttribute("value", uniqueElement[i]);
+        var t = document.createTextNode(attributes[i]);
+        option.setAttribute("value", attributes[i]);
         option.appendChild(t);
         $('#fdLHS').append(option);
 
         var option2 = document.createElement('option');
-        var t2 = document.createTextNode(uniqueElement[i]);
-        option2.setAttribute('value', uniqueElement[i]);
+        var t2 = document.createTextNode(attributes[i]);
+        option2.setAttribute('value', attributes[i]);
         option2.appendChild(t2);
         $('#fdRHS').append(option2);
 
         var option3 = document.createElement('option');
-        var t3 = document.createTextNode(uniqueElement[i]);
-        option3.setAttribute('value', uniqueElement[i]);
+        var t3 = document.createTextNode(attributes[i]);
+        option3.setAttribute('value', attributes[i]);
         option3.appendChild(t3);
         $('#mvdRHS').append(option3);
 
         var option4 = document.createElement('option');
-        var t4 = document.createTextNode(uniqueElement[i]);
-        option4.setAttribute('value', uniqueElement[i]);
+        var t4 = document.createTextNode(attributes[i]);
+        option4.setAttribute('value', attributes[i]);
         option4.appendChild(t4);
         $('#mvdLHS').append(option4);
     }
