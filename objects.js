@@ -7,7 +7,7 @@ var Fd = function (lhs, rhs) {
         for (i = 0; i < lhs.length; i++) {
             fd += lhs[i] + ' ';
         }
-        fd += '&#8594; '
+        fd += String.fromCharCode(8594) + ' ';
         for (i = 0; i < rhs.length; i++) {
             fd += rhs[i] + ' ';
         }
