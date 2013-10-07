@@ -26,7 +26,7 @@ var Mvd = function (lhs, rhs) {
         for (i = 0; i < lhs.length; i++) {
             fd += lhs[i] + ' ';
         }
-        fd += '&#8608; '
+        fd += String.fromCharCode(8608) + ' ';
         for (i = 0; i < rhs.length; i++) {
             fd += rhs[i] + ' ';
         }
