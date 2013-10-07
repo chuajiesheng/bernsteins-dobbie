@@ -42,6 +42,25 @@ $('#fdRHS').on('change', function() {
     });
 });
 
+function removeFd() {
+    var span = this;
+    var fd = span.innerText;
+
+    var index = -1;
+
+    for (var i = 0; i < fds.length; i++) {
+        var s = fds[i].str();
+        if (s == fd) {
+            index = i;
+        }
+    }
+
+    if (index > -1) {
+        var obj = fds.splice(index, 1);
+        this.parentElement.removeChild(this);
+    }
+}
+
 $('#addFd').on('click', function () {
     var lhs = [];
     var rhs = [];
@@ -61,6 +80,7 @@ $('#addFd').on('click', function () {
     fds.push(fd);
 
     var span = document.createElement('span');
+    span.onclick = removeFd;
     $(span).html(fd.str());
     $('#fds')[0].appendChild(span);
     $('#fds')[0].appendChild(document.createElement('br'));
