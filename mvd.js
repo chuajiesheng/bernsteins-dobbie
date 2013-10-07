@@ -42,6 +42,25 @@ $('#mvdRHS').on('change', function() {
     });
 });
 
+function removeMvd() {
+    var span = this;
+    var mvd = span.innerText;
+
+    var index = -1;
+
+    for (var i = 0; i < mvds.length; i++) {
+        var s = mvds[i].str();
+        if (s == mvd) {
+            index = i;
+        }
+    }
+
+    if (index > -1) {
+        var obj = mvds.splice(index, 1);
+        this.parentElement.removeChild(this);
+    }
+}
+
 $('#addMvd').on('click', function () {
     var lhs = [];
     var rhs = [];
@@ -61,6 +80,7 @@ $('#addMvd').on('click', function () {
     mvds.push(mvd);
 
     var span = document.createElement('span');
+    span.onclick = removeMvd;
     $(span).html(mvd.str());
     $('#mvds')[0].appendChild(span);
     $('#mvds')[0].appendChild(document.createElement('br'));
