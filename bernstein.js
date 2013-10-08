@@ -1,5 +1,8 @@
+(function(window){
+    
+    function Bernstein(){}
 
-//Step 4 function, merge equivalent keys
+	//Step 4 function, merge equivalent keys
 	//Assume an array of functional dependencies 
 
 	//Loop through all the keys and check for proper equivalent (find closure)
@@ -14,25 +17,26 @@
 	//likewise if Y->Z in either of the relation where Z inside X
 
 	//output the relation (it will depend on the input)
-function step4($wtf_is_coming_in){
+    Bernstein.prototype.step4 = function() {
+        console.log("hello");
+    }
 
-
-}
-//Step 5 function eliminate transitive dependency
+    //Step 5 function eliminate transitive dependency
 	//for each FD, check transitive as follow
 		//if A->B, check if B appears at LHS and see what it points to (eg. B->C)
 			//then check if A->C exist
 				//if exist
 					//remove A->C
-function step5($wtf_is_coming_in){
+    Bernstein.prototype.step5 = function() {
+        console.log("hello");
+    }
 
+	//Step 6 function
+		//yay simple as it is, convert all to the relation 
+    Bernstein.prototype.step6= function() {
+        console.log("hello");
+    }
 
+    window.Bernstein = new Bernstein();
 
-}
-
-//Step 6 function
-	//yay simple as it is, convert all to the relation 
-function step6(wtf_is_coming_in){
-
-
-}
+})(window);
