@@ -68,11 +68,9 @@
                 //if same closure
                 if (arrayEqual(closureSet,closureSet2)){
 
-                    console.log("found identical closure and creating a new group of");
-                    console.log("LHS ==");
-                    console.log(sameLHSFds[0].lhs);
-                    console.log("RHS ==");
-                    console.log(groupfds[i][0].lhs);
+                    var message = "found identical closure and creating a new group with LHS="+
+                                    sameLHSFds[0].lhs + ", RHS=" + groupfds[i][0].lhs;
+                    step4Messages.push(message);
                     
                     //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
                     groupfds[totalGrp] = new Array();
@@ -105,7 +103,6 @@
 
                 fds = group[x];
 
-
                 //case 1
                 if(arrayEqual(fdsToRemove.lhs,fds.lhs)){
 
@@ -115,6 +112,17 @@
                         $.each(fds.rhs,function(fdsIndex,fdsAttr){
 
                             if(fdsAttr == fdsToRemoveAttr){
+
+                                //found a similar LHS and RHS 
+                                var message = "Found a FD of "
+                                                "LHS = " + fds.lhs + 
+                                                "RHS = " + fds.rhs + 
+                                                ", contain the same as the FDS to remove of "+
+                                                "LHS = " + fdsToRemove.lhs + 
+                                                "RHS = " + fdsToRemove.rhs +
+                                                ". Removing similar RHS attribute!"
+                                step4Messages.push(message);
+
                                 //remove it from the fds 
                                 fds.rhs.splice(fdsIndex,1);
                             }
