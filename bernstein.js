@@ -81,7 +81,7 @@
                     groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
 
                     //loop through all the partitioned group fds and remove X-Y if found 
-                    groupfds = removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
+                    removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
 
                     totalGrp++;
 
@@ -100,7 +100,11 @@
 
             var group = groupfds[i];
 
-            $.each(group,function(index,fds){
+            for(var x =0; x < group.length; x ++){
+            //$.each(group,function(index,fds){
+
+                fds = group[x];
+
 
                 //case 1
                 if(arrayEqual(fdsToRemove.lhs,fds.lhs)){
@@ -118,13 +122,12 @@
                     })
 
                     if (fds.rhs.length ==0){
-                        groupfds[i].splice(index);
+                        groupfds[i].splice(x,1);
+                        x--;
                     }
 
-                }
-
-                //case 2 
-                if(arrayEqual(fdsToRemove.rhs,fds.lhs)){
+                } //case 2 
+                else if(arrayEqual(fdsToRemove.rhs,fds.lhs)){
 
                     //Remove any fds.rhs that is inside fdsToRemove.rhs 
                     $.each(fdsToRemove.rhs,function(fdsRemoveIndex,fdsToRemoveAttr){
@@ -137,30 +140,45 @@
                         })
 
                         if (fds.rhs.length ==0){
-                            groupfds[i].splice(index);
+                            groupfds[i].splice(x,1);
+                            x--;
                         }
 
                     })
 
                 } 
 
-            })
+            }
 
         }
 
-        return groupfds;
+        //return groupfds;
 
     }
 
 
     //Step 5 function eliminate transitive dependency
-	//for each FD, check transitive as follow
-		//if A->B, check if B appears at LHS and see what it points to (eg. B->C)
-			//then check if A->C exist
-				//if exist
-					//remove A->C
-    Bernstein.prototype.step5 = function() {
-        console.log("hello");
+    Bernstein.prototype.step5 = function(groupfds) {
+
+        //convert the group fds to the fds 
+        var tempfds = new Array();
+
+        $.each(group,fds, function(groupIndex,setfds){
+            $.each(setfds,function(setIndex,fds){
+                tempfds.push(fds);
+            })
+        
+        });
+        
+        console.log(tempfds);
+
+    }
+
+    //input sample
+    //fdsToCheck = A->B
+    //fds = global  
+    function isTransitive(fdsToCheck,fds){
+
     }
 
 	//Step 6 function

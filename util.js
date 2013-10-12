@@ -92,7 +92,7 @@ function closure(att, fds) {
     var res2 = close(res, fds);
     while (!arrayEqual(res, res2)) {
         res = res2;
-        res2 = close(res, fds);c
+        res2 = close(res, fds);
     }
     return res2;
 }
