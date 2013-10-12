@@ -1,5 +1,5 @@
 (function(window){
-    
+
     function Bernstein(){}
 
     //Partition FDs into respective group
@@ -15,20 +15,20 @@
         	//if exist, push it inside that group 
         	$.each(groupfds,function(groupIndex,groupVal){
 
-  				var firstFdsInGroup = groupfds[groupIndex][0];
+              var firstFdsInGroup = groupfds[groupIndex][0];
 
-  				if(firstFdsInGroup != undefined){
+              if(firstFdsInGroup != undefined){
 
-  					var isLHSEqual = compareFDLHS(firstFdsInGroup,tempFDS);
+                 var isLHSEqual = compareFDLHS(firstFdsInGroup,tempFDS);
 
   					//result 1 == similar
   					if(isLHSEqual == true){
-	        			groupfds[groupIndex].push(tempFDS);
-	        			found = true; 
-	        		}
-  				}
-        		
-        	});
+                        groupfds[groupIndex].push(tempFDS);
+                        found = true; 
+                    }
+                }
+
+            });
 
         	//if its not found in any group
         	if(found == false) {
@@ -45,24 +45,113 @@
 
     }
 
-	//Step 4 function, merge equivalent keys
-	//Assume an array of functional dependencies 
+	//Step 4 function, merge equivalent keys, 
+    //input : an array of fds in each partitioned grp 
+    Bernstein.prototype.step4 = function(groupfds) {
+        
+        var totalGrp = groupfds.length;
+        var originalGrpLength = groupfds.length;
+        var noAddedPartitionedGrp = 0; 
+        
+        //loop through each groupsfds with the form [Array,Array,Array]
+        $.each(groupfds, function(index,sameLHSFds){
 
-	//Loop through all the keys and check for proper equivalent (find closure)
-	//Example would be B->D in R1 and D->B in R2 
-	//ANother example would be AB -> CD and CE-> AB, 
-		//for the above case, pull out AB->C
+            //given LHS, find the closure 
+            var closureSet = closure(sameLHSFds[0].lhs,fds);
 
-	//If proper equivalent, create another relation with (B->D and D->B)
-		//remove B->D and D->B from the other relation
+            //loop through the other groupfds 
+            for(var i=index+1; i < originalGrpLength; i++ ){
 
-	//Also if X->Z in either of the relation and Z is inside Y, remove X->Z,
-	//likewise if Y->Z in either of the relation where Z inside X
+                //check the closure for the next partitioned group 
+                var closureSet2 = closure(groupfds[i][0].lhs,fds);
 
-	//output the relation (it will depend on the input)
-    Bernstein.prototype.step4 = function() {
-        console.log("hello");
+                //if same closure
+                if (arrayEqual(closureSet,closureSet2)){
+
+                    console.log("found identical closure and creating a new group of");
+                    console.log("LHS ==");
+                    console.log(sameLHSFds[0].lhs);
+                    console.log("RHS ==");
+                    console.log(groupfds[i][0].lhs);
+                    
+                    //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
+                    groupfds[totalGrp] = new Array();
+                    groupfds[totalGrp][0] = new Fd;
+                    groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
+                    groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
+
+                    //loop through all the partitioned group fds and remove X-Y if found 
+                    groupfds = removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
+
+                    totalGrp++;
+
+                }
+
+            }
+        })
     }
+
+    //eg. remove FDS of X->Y from groupfds
+    //Case 1: if groupFDS contains X->YZ, change it to only X->Z
+    //Case 2: if groupFDS contains Y->XZ, change it to only Y->Z 
+    function removeFDFromGroup(fdsToRemove,groupfds,initialGroupFdsLength){
+
+        for(var i=0;i<initialGroupFdsLength;i++){
+
+            var group = groupfds[i];
+
+            $.each(group,function(index,fds){
+
+                //case 1
+                if(arrayEqual(fdsToRemove.lhs,fds.lhs)){
+
+                    //Remove any fds.rhs that is inside fdsToRemove.rhs 
+                    $.each(fdsToRemove.rhs, function(fdsRemoveIndex,fdsToRemoveAttr){
+
+                        $.each(fds.rhs,function(fdsIndex,fdsAttr){
+
+                            if(fdsAttr == fdsToRemoveAttr){
+                                //remove it from the fds 
+                                fds.rhs.splice(fdsIndex,1);
+                            }
+                        })
+                    })
+
+                    if (fds.rhs.length ==0){
+                        groupfds[i].splice(index);
+                    }
+
+                }
+
+                //case 2 
+                if(arrayEqual(fdsToRemove.rhs,fds.lhs)){
+
+                    //Remove any fds.rhs that is inside fdsToRemove.rhs 
+                    $.each(fdsToRemove.rhs,function(fdsRemoveIndex,fdsToRemoveAttr){
+
+                        $.each(fds.rhs,function(fdsIndex,fdsAttr){
+                            if(fdsAttr == fdsToRemoveAttr){
+                                //remove it from the fds 
+                                fds.lhs.splice(fdsIndex,1);
+                            }
+                        })
+
+                        if (fds.rhs.length ==0){
+                            groupfds[i].splice(index);
+                        }
+
+                    })
+
+                } 
+
+            })
+
+        }
+
+        return groupfds;
+
+    }
+
 
     //Step 5 function eliminate transitive dependency
 	//for each FD, check transitive as follow
