@@ -161,30 +161,55 @@
     Bernstein.prototype.step5 = function(groupfds) {
 
         //convert the group fds to the fds 
-        var tempfds = new Array();
+        var tempfdsSet = getAllFdsFromGroupFds(groupfds);
 
-        $.each(group,fds, function(groupIndex,setfds){
+        $.each(groupfds, function(groupIndex,setFds){
+            
+            for(var i =0; i < setFds.length;i++){
+
+                // check if this FDS is transitive 
+                if (isTransitive(setFds[i],tempfdsSet)){
+
+                    //is transitive, remove that fds from the group 
+                    groupfds[groupIndex].splice(i,1);
+                    i--;
+                }
+
+            }
+        });
+
+
+    }
+
+    //function convert the groupfds which is array of arrays of FDS into arrays of FDS
+    function getAllFdsFromGroupFds(groupfds){
+
+        var tempfdsSet = new Array();
+
+        $.each(groupfds, function(groupIndex,setfds){
             $.each(setfds,function(setIndex,fds){
-                tempfds.push(fds);
+                tempfdsSet.push(fds);
             })
         
         });
-        
-        console.log(tempfds);
 
+        return tempfdsSet;
     }
 
     //input sample
     //fdsToCheck = A->B
-    //fds = global  
+    //fds = set of FDS [A->B,A->C,A->D...]
     function isTransitive(fdsToCheck,fds){
+
+
 
     }
 
 	//Step 6 function
 		//yay simple as it is, convert all to the relation 
-    Bernstein.prototype.step6= function() {
-        console.log("hello");
+    Bernstein.prototype.step6= function(groupfds) {
+
+        fds = getAllFdsFromGroupFds(groupfds);
     }
 
 
