@@ -84,4 +84,14 @@ $('#addFd').on('click', function () {
     $(span).html(fd.str());
     $('#fds')[0].appendChild(span);
     $('#fds')[0].appendChild(document.createElement('br'));
+
+    $('#fdRHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
+
+    $('#fdLHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
 });

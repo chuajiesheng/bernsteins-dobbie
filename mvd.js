@@ -84,4 +84,15 @@ $('#addMvd').on('click', function () {
     $(span).html(mvd.str());
     $('#mvds')[0].appendChild(span);
     $('#mvds')[0].appendChild(document.createElement('br'));
+
+    $('#mvdRHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
+
+    $('#mvdLHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
+
 });
