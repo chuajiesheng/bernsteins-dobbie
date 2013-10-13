@@ -176,12 +176,20 @@
             for(var i =0; i < setFds.length;i++){
 
                 // check if this FDS is transitive 
+                // console.log("======== checking =======")
+                // console.log(setFds[i]);
+                // console.log(tempfdsSet);
+                //console.log(isTransitive(setFds[i],tempfdsSet));
                 if (isTransitive(setFds[i],tempfdsSet)){
 
                     //is transitive, remove that fds from the group 
                     groupfds[groupIndex].splice(i,1);
                     i--;
+                    console.log("is transitive");
                 }
+                // else{
+                //     console.log("not transitive");
+                // }
 
             }
         });
@@ -205,11 +213,77 @@
     }
 
     //input sample
-    //fdsToCheck = A->B
-    //fds = set of FDS [A->B,A->C,A->D...]
+    //fdsToCheck = A->DEF
+    //fds = set of FDS [A->B,B->C,C->DE,B->F,A->DEF]
+    //comment below will be based on the above input 
     function isTransitive(fdsToCheck,fds){
 
+        //tempFdsSet contains all FD except A->DEF 
+        var tempFdsSet = new Array();
 
+        $.each(fds,function(index,fd){
+
+            if(!arrayEqual(fd.lhs,fdsToCheck.lhs) || !arrayEqual(fd.rhs,fdsToCheck.rhs)){
+                
+                tempFdsSet.push(fd);
+            }
+
+        })
+
+        //get closure of A without A->DEF inside 
+        var closureAttr = closure(fdsToCheck.lhs,tempFdsSet);
+
+        //if closure contains DEF
+        if(contains(fdsToCheck.rhs,closureAttr)){
+
+            var transitivePointed = false; 
+
+            //fdsSet will contain other fd that has RHS of B or E or F 
+            var fdsSet = new Array(); 
+                
+            //loop through all RHS attribute (B,E,F)
+            $.each(fdsToCheck.rhs,function(index,attr){
+
+                //for each (B,E,F), check who is pointing to it 
+                $.each(tempFdsSet,function(innderIndex,fd){
+
+                    //found the guy that pointed to either (B,E or F)
+                    if(contains(attr,fd.rhs)){
+                        fdsSet.push(fd);
+                    }
+                })
+
+            })
+
+            //segment purpose is to find out if C or B is pointing to A 
+
+            //looping through the entire fds group
+            $.each(fds,function(index,fd){
+
+                if(arrayEqual(fdsToCheck.lhs,fd.lhs)){
+
+                    var pointedToFD = false;
+                    $.each(fdsSet,function(innerIndex,fdsSet_fd){
+
+                        if(contains(fdsSet_fd.lhs,fd.rhs)){
+                            pointedToFD = true;
+                        }
+
+                    })
+                    if(pointedToFD == false){
+                        transitivePointed = true;
+                    }
+
+
+                }
+
+            })
+            
+            return transitivePointed;
+
+        }
+
+        return false;
 
     }
 
