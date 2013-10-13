@@ -76,12 +76,32 @@ $('#addFd').on('click', function () {
     });
 
     var fd = new Fd(lhs, rhs);
-    // TODO: check for duplicate fds
-    fds.push(fd);
 
-    var span = document.createElement('span');
-    span.onclick = removeFd;
-    $(span).html(fd.str());
-    $('#fds')[0].appendChild(span);
-    $('#fds')[0].appendChild(document.createElement('br'));
+    var duplicate = false;
+    for (var i = 0; i < fds.length; i++) {
+        if (fds[i].str() == fd.str()) {
+            duplicate = true;
+        }
+    }
+    if (!duplicate) {
+        fds.push(fd);
+
+        var span = document.createElement('span');
+        span.onclick = removeFd;
+        $(span).html(fd.str());
+        $('#fds')[0].appendChild(span);
+        $('#fds')[0].appendChild(document.createElement('br'));
+    } else {
+        console.log('duplicate fds: ' + fd.str());
+    }
+
+    $('#fdRHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
+
+    $('#fdLHS > option').each(function() {
+        $(this).prop('selected', false);
+        $(this).prop('disabled', false);
+    });
 });
