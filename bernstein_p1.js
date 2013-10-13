@@ -1,19 +1,19 @@
-function removeSame(a, b) {
-    
-    var res = [];
+//method to remove redundant attribute and FDs (covering)
+function removeCover(tempArr, rhs) {
     var diff = [];
-    diff = _.without(b, a);
+	//check any elements in rhs is in closure
+    //repeated element will be removed
+    diff = _.without(rhs, tempArr);
     if (diff != null){
-        b = _.difference(b, a);
+        rhs = _.difference(rhs, tempArr);
     } else {
-        b = b
+        rhs = rhs
     }
-    return b; 
+    return rhs; 
 }
 
 function cover(att, fds) {
     var res = [];
-
     // init
     if (Array.isArray(att)) {
         for (var i = 0; i < att.length; i++) {
@@ -23,13 +23,14 @@ function cover(att, fds) {
         res.push(att);
     }
 
-
     for (var i = 0; i < fds.length; i++) {
         var lhs = fds[i].lhs;
         var rhs = fds[i].rhs;
         if (contains(lhs, res)) {
-            rhs = removeSame(res, rhs);
+            //remove redundant attribute from RHS
+            rhs = removeCover(res, rhs);
             fds[i].rhs = rhs;
+            //if rhs becomes empty, whole FD is removed
             if (rhs.length == 0){
                 fds.splice(i, 1); 
             } else {
@@ -46,7 +47,7 @@ function covering(att, fds) {
     var res = cover(att, fds);
     // closure with elements added in
     var res2 = cover(res, fds);
-    //loop to get all closure
+    //Get all closure
     while (!arrayEqual(res, res2)) {
         res = res2;
        res2 = cover(res, fds);
@@ -55,35 +56,23 @@ function covering(att, fds) {
 }
 
 
-/*****************************************************/
-/*
-var fds = [];
-fds[0] = new Fd(["a"], ["b"]);
-fds[1] = new Fd(["b"], ["c"]);
-fds[2] = new Fd(["a"], ["c"]);
-fds[3] = new Fd(["a","d"], ["e"]);
-fds[4] = new Fd(["a","b"], ["d","f"]);
-*/
-var fds = [];
-fds[0] = new Fd(["a"], ["b"]);
-fds[1] = new Fd(["b"], ["c"]);
-fds[2] = new Fd(["a"], ["c"]);
-fds[3] = new Fd(["a","b"], ["d","f"]);
-fds[4] = new Fd(["a","d"], ["e"]);
-
 function step1(fds) {
-//step 1
     for (var i=0;i<fds.length;i++)
     {
-        var clos = closure(fds[i].lhs, fds);
-        clos = _.difference(clos, fds[i].lhs);
+        //get closure for attributes on LHS
+        //then exclude LHS attributes from the closure
+        var lhsClosure = closure(fds[i].lhs, fds);
+        lhsClosure = _.difference(lhsClosure, fds[i].lhs);
+      
         for (var j=0;j<fds.length;j++)
         {
+            //remove redundant attributes from LHS
              if(contains(fds[i].lhs, fds[j].lhs)){
-                fds[j].lhs = _.difference(fds[j].lhs, clos);
+                fds[j].lhs = _.difference(fds[j].lhs, lhsClosure);
              }
         }
     }
+	return fds;
 }
 
 
@@ -92,13 +81,5 @@ function step2(fds) {
     {
         fds = covering(fds[i].lhs, fds);    
     }
-}
-
-step1(fds);
-step2(fds);
-
-//check printing
-for (var j=0;j<fds.length;j++)
-{
-    console.log(fds[j].lhs + " then "+ fds[j].rhs);      
+	return fds;
 }
