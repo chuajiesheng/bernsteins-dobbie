@@ -76,14 +76,24 @@ $('#addMvd').on('click', function () {
     });
 
     var mvd = new Mvd(lhs, rhs);
-    // TODO: check for duplicate mvds
-    mvds.push(mvd);
 
-    var span = document.createElement('span');
-    span.onclick = removeMvd;
-    $(span).html(mvd.str());
-    $('#mvds')[0].appendChild(span);
-    $('#mvds')[0].appendChild(document.createElement('br'));
+    var duplicate = false;
+    for (var i = 0; i < mvds.length; i++) {
+        if (mvds[i].str() == mvd.str()) {
+            duplicate = true;
+        }
+    }
+    if (!duplicate) {
+        mvds.push(mvd);
+
+        var span = document.createElement('span');
+        span.onclick = removeMvd;
+        $(span).html(mvd.str());
+        $('#mvds')[0].appendChild(span);
+        $('#mvds')[0].appendChild(document.createElement('br'));
+    } else {
+        console.log('duplicate mvds: ' + mvd.str());
+    }
 
     $('#mvdRHS > option').each(function() {
         $(this).prop('selected', false);
