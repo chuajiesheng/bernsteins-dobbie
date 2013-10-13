@@ -2,6 +2,9 @@
 
     function Bernstein(){}
 
+
+    var initialGroupfdsLength = -1;
+
     //Partition FDs into respective group
     Bernstein.prototype.step3 = function(fds) {
 
@@ -42,6 +45,8 @@
         	}
 
         });
+
+        initialGroupfdsLength = groupfds.length;
 
     }
 
@@ -291,7 +296,36 @@
 		//yay simple as it is, convert all to the relation 
     Bernstein.prototype.step6= function(groupfds) {
 
-        fds = getAllFdsFromGroupFds(groupfds);
+        //fds = getAllFdsFromGroupFds(groupfds);
+
+        console.log(initialGroupfdsLength);
+
+        step6JIndex = initialGroupfdsLength;
+
+        //merge all the individual group set of FD into one FD
+        //eg. {A -> B, A -> C} into {A -> B,C}
+        //$.each(groupfds,function(groupIndex,setFds){
+        for(var i =0;i<initialGroupfdsLength;i++){
+                
+            var setFds = groupfds[i];
+
+            $.each(setFds,function(setIndex,fds){
+
+                if(setIndex!=0){
+                    setFds[0].rhs.push(setFds[setIndex].rhs);
+                }                
+
+            });
+
+            setFds.splice(0,setFds.length-1);
+        
+        }
+
+
+        
+
+        
+
     }
 
 
