@@ -91,6 +91,8 @@ $('#addMvd').on('click', function () {
         $(span).html(mvd.str());
         $('#mvds')[0].appendChild(span);
         $('#mvds')[0].appendChild(document.createElement('br'));
+
+        $('#startBernstein').prop('disabled', false);
     } else {
         console.log('duplicate mvds: ' + mvd.str());
     }
