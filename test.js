@@ -8,7 +8,8 @@ t_fds[3] = new Fd(["a","d"], ["e"]);
 t_fds[4] = new Fd(["a","b"], ["d","f"]);
 
 var res = closure('a', t_fds);
-console.log(res);
+var expected = ['a','b','c','d','e','f'];
+console.log('test1: ' + arrayEqual(res, expected));
 
 var res2 = step1(t_fds);
 res2 = step2(res2);
