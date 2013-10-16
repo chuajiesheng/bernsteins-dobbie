@@ -62,8 +62,11 @@
         $.each(groupfds, function(index,sameLHSFds){
 
             //given LHS, find the closure 
-            var closureSet = closure(sameLHSFds[0].lhs,fds);
-
+            if(sameLHSFds[0] != undefined){
+                var closureSet = closure(sameLHSFds[0].lhs,fds);
+            }else{
+                var closureSet = '';
+            }
             //loop through the other groupfds 
             for(var i=index+1; i < originalGrpLength; i++ ){
 
@@ -83,8 +86,13 @@
                     groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
                     groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
 
+                    groupfds[totalGrp][1] = new Fd;
+                    groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
+                    groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
+
                     //loop through all the partitioned group fds and remove X-Y if found 
                     removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
+                    removeFDFromGroup(groupfds[totalGrp][1],groupfds,originalGrpLength);
 
                     totalGrp++;
 
@@ -99,12 +107,16 @@
     //Case 2: if groupFDS contains Y->XZ, change it to only Y->Z 
     function removeFDFromGroup(fdsToRemove,groupfds,initialGroupFdsLength){
 
+        console.log('came inside remove FD From Group with');
+        console.log(fdsToRemove);
+        console.log(groupfds);
+        console.log(initialGroupFdsLength);
+
         for(var i=0;i<initialGroupFdsLength;i++){
 
             var group = groupfds[i];
 
             for(var x =0; x < group.length; x ++){
-            //$.each(group,function(index,fds){
 
                 fds = group[x];
 
