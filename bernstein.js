@@ -82,13 +82,22 @@
                     
                     //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
                     groupfds[totalGrp] = new Array();
+
+                    //copy a new array if not its copying references 
+                    var tempArrayCopy = clone(groupfds[index]);
+                    var tempArrayCopy2 = clone(groupfds[i]);
+
                     groupfds[totalGrp][0] = new Fd;
-                    groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
-                    groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
+                    groupfds[totalGrp][0].lhs = tempArrayCopy[0].lhs;
+                    groupfds[totalGrp][0].rhs = tempArrayCopy2[0].lhs;
+                    // groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
+                    // groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
 
                     groupfds[totalGrp][1] = new Fd;
-                    groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
-                    groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
+                    groupfds[totalGrp][1].lhs = tempArrayCopy2[0].lhs;
+                    groupfds[totalGrp][1].rhs = tempArrayCopy[0].lhs;
+                    // groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
+                    // groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
 
                     //loop through all the partitioned group fds and remove X-Y if found 
                     removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
@@ -324,19 +333,65 @@
             $.each(setFds,function(setIndex,fds){
 
                 if(setIndex!=0){
-                    setFds[0].rhs.push(setFds[setIndex].rhs);
+
+                    $.each(setFds[0].rhs,function(index,rhs_attr){
+                        setFds[0].rhs.push(rhs_attr);    
+                    })
+                    
                 }                
 
             });
-
-            setFds.splice(0,setFds.length-1);
-        
+            setFds.splice(1,setFds.length-1);
         }
 
+        //Merge all the all key relation into one FD
+        //eg. {B->D, D->B} into FD.lhs = ['B','D'] and FD.rhs = '';
+        for(var j= initialGroupfdsLength;j<groupfds.length;j++){
 
-        
+            groupfds[j].splice(1,groupfds[j].length-1);
 
-        
+            var value = groupfds[j][0].lhs;
+            groupfds[j][0].lhs = [];
+            groupfds[j][0].lhs.push(value);
+            groupfds[j][0].lhs.push(groupfds[j][0].rhs);
+
+            groupfds[j][0].rhs = [];
+
+        }
+
+        // groupfds index 0 to initialGroupfds contains normal relation
+        // groupfds index initialGroupFds to end contain all key relation
+        // goal of this part is to remove fds from normal relation if their key is in all_key
+        for(var i =0;i< initialGroupfdsLength;i++){
+
+            for(var j= initialGroupfdsLength;j<groupfds.length;j++){
+                
+                console.log('comparing jehe with j=='+j);
+                console.log(groupfds[j]);
+                
+                $.each(groupfds[j][0].lhs,function(index,allKeyLhs){
+
+                    // console.log('comparing');
+                    // console.log(groupfds[i].lhs);
+                    // console.log(allKeyLhs);
+                    $.each(groupfds[i],function(innerIndex,innerfds){
+
+                        if(arrayEqual(innerfds.lhs,allKeyLhs)){
+
+                            groupfds[j][0].rhs.push(innerfds.rhs);
+                            groupfds[i].splice(0,groupfds[i].length+1);
+
+                        }
+
+                    })              
+
+                })
+
+                 
+            }
+
+        }
+
 
     }
 
@@ -378,6 +433,29 @@
 
     }
 
+    function clone(source) {
+        var result = source, i, len;
+        if (!source
+            || source instanceof Number
+            || source instanceof String
+            || source instanceof Boolean) {
+            return result;
+        } else if (Object.prototype.toString.call(source).slice(8,-1) === 'Array') {
+            result = [];
+            var resultLen = 0;
+            for (i = 0, len = source.length; i < len; i++) {
+                result[resultLen++] = clone(source[i]);
+            }
+        } else if (typeof source == 'object') {
+            result = {};
+            for (i in source) {
+                if (source.hasOwnProperty(i)) {
+                    result[i] = clone(source[i]);
+                }
+            }
+        }
+        return result;
+    };
 
     window.Bernstein = new Bernstein();
 
