@@ -11,10 +11,16 @@ $('#startBernstein').on('click', function () {
     fds = step2(fds);
 
     // step 3
+    Bernstein.step3(fds);
 
     // step 4
+    Bernstein.step4(groupfds);
 
     // step 5
-
+    Bernstein.step5(groupfds);
+    
     // step 6
+    Bernstein.step6(groupfds);
+
+
 });
