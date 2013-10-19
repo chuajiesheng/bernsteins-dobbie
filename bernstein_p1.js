@@ -63,16 +63,20 @@ function step1(fds) {
         //then exclude LHS attributes from the closure
         var lhsClosure = closure(fds[i].lhs, fds);
         lhsClosure = _.difference(lhsClosure, fds[i].lhs);
-      
+        lhsCheck = fds[i].lhs;
+    
         for (var j=0;j<fds.length;j++)
         {
+            lhs = fds[j].lhs;
+            rhs = fds[j].rhs;
             //remove redundant attributes from LHS
-             if(contains(fds[i].lhs, fds[j].lhs)){
-                fds[j].lhs = _.difference(fds[j].lhs, lhsClosure);
+             if(contains(lhsCheck, lhs)){
+                lhs = _.difference(lhs, lhsClosure);
+                fds[j] = new Fd(lhs,rhs);
              }
         }
     }
-	return fds;
+    return fds;
 }
 
 
