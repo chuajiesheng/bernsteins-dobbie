@@ -35,16 +35,52 @@ var Mvd = function (lhs, rhs) {
 }
 Mvd.prototype = new Mvd();
 
-var R = function (name, attr) {
+var R = function (name, key, attr) {
     this.name = name;
-    this.attr = attr;
-    this.str = function () {
+    key = _.unique(key, true);
+    this.key = key;
+    attr = _.unique(attr, true);
+    this.attr = attr
+
+    this.html = function () {
         var s = name;
 
-        if (attr.length == 0) {
+        if (key.length == 0 && attr.length == 0) {
             s += '()';
         } else {
             s += '(';
+            s += '<u>';
+            for (i = 0; i < key.length; i++) {
+                s += key[i];
+                if (i < (key.length - 1)) {
+                    s += ', ';
+                }
+            }
+            s += '</u>';
+            s += ', ';
+            for (i = 0; i < attr.length; i++) {
+                s+= attr[i];
+                if (i < (attr.length - 1)) {
+                    s+= ', ';
+                }
+            }
+            s += ')';
+        }
+        return s;
+    }
+    this.str = function () {
+        var s = name;
+
+        if (key.length == 0 && attr.length == 0) {
+            s += '()';
+        } else {
+            s += '(';
+            for (i = 0; i < key.length; i++) {
+                s += key[i];
+                if (i < (key.length - 1)) {
+                    s+= ', ';
+                }
+            }
             for (i = 0; i < attr.length; i++) {
                 s+= attr[i];
                 if (i < (attr.length - 1)) {
