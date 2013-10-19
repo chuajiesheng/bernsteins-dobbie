@@ -34,3 +34,26 @@ var Mvd = function (lhs, rhs) {
     }
 }
 Mvd.prototype = new Mvd();
+
+var R = function (name, attr) {
+    this.name = name;
+    this.attr = attr;
+    this.str = function () {
+        var s = name;
+
+        if (attr.length == 0) {
+            s += '()';
+        } else {
+            s += '(';
+            for (i = 0; i < attr.length; i++) {
+                s+= attr[i];
+                if (i < (attr.length - 1)) {
+                    s+= ', ';
+                }
+            }
+            s += ')';
+        }
+        return s;
+    }
+}
+R.prototype = new R();
