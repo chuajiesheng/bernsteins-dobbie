@@ -46,5 +46,31 @@ function reconstruct(groupfds) {
     console.log(rels);
 
     // find all attrs
+    var att = [];
+    var att2 = [];
 
+    if (Array.isArray(rels) && rels.length > 0) {
+        att = rels[0].attr;
+    }
+
+    while (!arrayEqual(att, att2)) {
+        att2 = att;
+
+        for (var i = 1; i < rels.length; i++) {
+            var intersect = intersection(att, rels[i].attr);
+            if (intersect.length > 0) {
+                var combine = att.concat(rels[i].attr);
+                var unique = _.unique(combine, true);
+                att = unique;
+            }
+        }
+    }
+
+    att = _.unique(att,true);
+    console.log('[reconstruct] all attr: ');
+    console.log(att);
+
+    var missing = difference(attributes, att);
+    console.log('[reconstruct] missing: ');
+    console.log(missing);
 }
