@@ -15,6 +15,18 @@ function flatten(a) {
     }
 }
 
+function difference(big, small) {
+    // subtract small from big
+    // example: _.difference([1, 2, 3, 4, 5], [5, 2, 10]) => [1, 3, 4]
+    return _.difference(big, small);
+}
+
+function intersection(a1, a2) {
+    // find intersection
+    // _.intersection([1, 2, 3], [101, 2, 1, 10], [2, 1]) => [1, 2]
+    return _.intersection(a1, a2);
+}
+
 function reconstruct(groupfds) {
     console.log('[reconstruct] groupfds: ');
     console.log(groupfds);
