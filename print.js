@@ -18,3 +18,9 @@ function print_message(message) {
     print(major + '.' + minor + '. ' + message + '<br />');
     minor = minor + 1;
 }
+
+function clear() {
+    $('#console').html('');
+    major = 0;
+    minor = 1;
+}
