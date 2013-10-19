@@ -9,7 +9,7 @@ function removeCover(tempArr, rhs) {
     } else {
         rhs = rhs
     }
-    return rhs; 
+    return rhs;
 }
 
 function cover(att, fds) {
@@ -32,7 +32,7 @@ function cover(att, fds) {
             fds[i].rhs = rhs;
             //if rhs becomes empty, whole FD is removed
             if (rhs.length == 0){
-                fds.splice(i, 1); 
+                fds.splice(i, 1);
             } else {
             newR = uniqueAdd(res, rhs);
             res = newR;
@@ -57,17 +57,17 @@ function covering(att, fds) {
 
 
 function step1(fds) {
-    console.log("Find redundant attribute for each LHS");
+    print_message("Find redundant attribute for each LHS");
     for (var i=0;i<fds.length;i++)
     {
         //get closure for attributes on LHS
         //then exclude LHS attributes from the closure
         var lhsClosure = closure(fds[i].lhs, fds);
-       
-        
+
+
         lhsClosure = _.difference(lhsClosure, fds[i].lhs);
         lhsCheck = fds[i].lhs;
-    
+
         for (var j=0;j<fds.length;j++)
         {
             lhs = fds[j].lhs;
@@ -77,12 +77,12 @@ function step1(fds) {
                 removedLHS = _.intersection(lhs, lhsClosure);
                 lhs = _.difference(lhs, lhsClosure);
                  if (removedLHS.length > 0){
-                      console.log("Find the closure of attribute "+ fds[i].lhs +": " + lhsClosure);
-        console.log("Remove redundant attribute on the LHS that is within the closure");
-                     console.log(removedLHS + " is removed from " +     fds[j].str());   
+                     print_message("Find the closure of attribute "+ fds[i].lhs +": " + lhsClosure);
+                     print_message("Remove redundant attribute on the LHS that is within the closure");
+                     print_message(removedLHS + " is removed from " +     fds[j].str());
                      fds[j] = new Fd(lhs,rhs);
-                     console.log("Hence the FD becomes " + fds[j].str());
-                 }                
+                     print_message("Hence the FD becomes " + fds[j].str());
+                 }
              }
         }
     }
@@ -93,7 +93,7 @@ function step1(fds) {
 function step2(fds) {
     for (var i=0;i<fds.length;i++)
     {
-        fds = covering(fds[i].lhs, fds);    
+        fds = covering(fds[i].lhs, fds);
     }
 	return fds;
 }
