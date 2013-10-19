@@ -4,10 +4,10 @@ function contains(a, b) {
     for (var i = 0; i < a.length; i++) {
         if (b.indexOf(a[i]) > -1) {
             // b contains a
-            res = true;
+            res = res && true;
         } else {
             // b don't have a
-            res = false;
+            res = res && false;
         }
     }
     return res;
