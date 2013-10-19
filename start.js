@@ -5,7 +5,7 @@ $('#startBernstein').on('click', function () {
     // step 1
     // pass in fds, return fds
     fds = step1(fds);
-    
+
     // step 2
     // pass in fds, return fds
     fds = step2(fds);
@@ -18,9 +18,13 @@ $('#startBernstein').on('click', function () {
 
     // step 5
     Bernstein.step5(groupfds);
-    
+
     // step 6
     Bernstein.step6(groupfds);
 
+    // reconstruct
+    reconstruct(groupfds);
+
+    // find all key
 
 });
