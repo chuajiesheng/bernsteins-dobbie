@@ -82,9 +82,11 @@
                 //if same closure
                     if (arrayEqual(closureSet,closureSet2)){
 
-                        var message = "found identical closure and creating a new group with LHS="+
-                                        sameLHSFds[0].lhs + ", RHS=" + groupfds[i][0].lhs;
+                        var message = "found identical closure and creating a new group with"+
+                                        sameLHSFds[0].lhs + "->" + groupfds[i][0].lhs;
+                        print_message(message);
                         step4Messages.push(message);
+
                         
                         //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
                         groupfds[totalGrp] = new Array();
@@ -151,13 +153,8 @@
                             if(fdsAttr == fdsToRemoveAttr){
 
                                 //found a similar LHS and RHS 
-                                var message = "Found a FD of "
-                                                "LHS = " + fds.lhs + 
-                                                "RHS = " + fds.rhs + 
-                                                ", contain the same as the FDS to remove of "+
-                                                "LHS = " + fdsToRemove.lhs + 
-                                                "RHS = " + fdsToRemove.rhs +
-                                                ". Removing similar RHS attribute!"
+                                var message = "Found a FD of "+fds.str()+ ", pusing the FD to group J instead.";
+                                print_message(message);
                                 step4Messages.push(message);
 
                                 //remove it from the fds 
@@ -218,6 +215,10 @@
                 // console.log(tempfdsSet);
                 //console.log(isTransitive(setFds[i],tempfdsSet));
                 if (isTransitive(setFds[i],tempfdsSet)){
+
+                    var message = setFds[i].str() + " is a transitive attribute, removing it from the group";
+                    step5Messages.push(message);
+                    print_message(message);
 
                     //is transitive, remove that fds from the group 
                     groupfds[groupIndex].splice(i,1);
@@ -311,29 +312,16 @@
 
             })
 
-            console.log('fdsSet ==');
-            console.log(fdsSet);
-            console.log('end fdsSet ==');
-
-            //no chance of transitive 
-            if (fdsSet.length ==0)
-                return false;
-
             /*
             fdsSet now contains all functional dependencies that
             was pointing to the closure attribute 
             
             */
 
-            //segment purpose is to find out if C or B is pointing to A 
+            //no chance of transitive 
+            if (fdsSet.length ==0)
+                return false;
 
-            //============== NOT THIS ISSUE ====================
-            // $.each(fdsSet,function(index,fds){
-            //     if(contains(fdsToCheck.lhs,fds.rhs)){
-            //         transitivePointed = true;
-            //     }
-            // })
-            // ===============================================
 
             //looping through all the functional dependencies
             $.each(fds,function(index,fd){
@@ -391,6 +379,9 @@
                 if(setIndex!=0){
 
                     $.each(setFds[setIndex].rhs,function(index,rhs_attr){
+
+                        var message = "merging " +  setFds[setIndex].str() + " into" + setFds[0].str();
+
                         setFds[0].rhs.push(rhs_attr);    
                     })
                     
