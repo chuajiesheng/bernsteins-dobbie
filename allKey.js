@@ -1,6 +1,6 @@
 //a to be LHS and b as relation and c as closure
 function addInLhs(a, b,closure) {
-    
+
     var flag=0;
 
     for ( var i =0; i< b.length;i++){
@@ -24,8 +24,8 @@ function addInLhs(a, b,closure) {
 }
 
 function removeDuplicateKey(a) {
-    
-    
+
+
     var sorted=a;
     var sorted = a.sort();
 
@@ -69,14 +69,14 @@ function isSubset(a, b)
            if(b[i] == a[j])
               break;
         }
-         
+
         /* If the above inner loop was not broken at all then
            arr2[i] is not present in arr1[] */
         if (j == a.length)
            return false;
     }
-     
-    /* If we reach here then all elements of arr2[] 
+
+    /* If we reach here then all elements of arr2[]
       are present in arr1[] */
     return true;
 }
@@ -201,7 +201,7 @@ function closure(att, fds) {
     var res2 = close(res, fds);
     while (!arrayEqual(res, res2)) {
         res = res2;
-        res2 = close(res, fds);c
+        res2 = close(res, fds);
     }
     return res2;
 }
@@ -211,8 +211,8 @@ function closure(att, fds) {
 
 function step7(fds) {
     console.log("Find All key for relation");
-   
-      
+
+
         var fdsNew = fds;
 
        var lhs=[];
@@ -246,7 +246,7 @@ function step7(fds) {
 
         for ( var i =0 ;i< fdsNew.length; i++){
 
-            
+
 
             for( var j=i; j< fdsNew.length; j++){
 
@@ -310,30 +310,30 @@ function step7(fds) {
             }
             else
                 {
-                            
+
                         tempLhs=addInLhs(tempLhs,attributesgroup,closure);
-                        
+
                          closure=uniqueAdd(tempLhs,closure);
-                            
+
                  }
 
-                
+
 
             if(arrayEqual(closure,attributesgroup))
             {
-               
+
                 result.push(tempLhs);
             }
       //      for (var k=0;k<result.length;k++)
         //{
          //  tempResult=tempResult + result[k];
-                     
+
         //}
         //console.log("Key" + keyno + " : " + tempResult);
 
 //keyno=keyno+1;
 //tempResult="";
-            
+
 
             keyResult.push(result);
             tempLhs=[];
@@ -362,7 +362,7 @@ for (var k=0;k<keyResult.length;k++)
 }
 
 
- 
+
 
 
 
