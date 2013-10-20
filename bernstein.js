@@ -35,7 +35,6 @@
 
         	//if its not found in any group
         	if(found == false) {
-        		console.log(groupfds.length + "<-- length!");
         		var size = groupfds.length;
         		//create a new group and push the tempFDS in 
         		groupfds[size] = new Array();
@@ -48,16 +47,22 @@
 
         initialGroupfdsLength = groupfds.length;
 
+        console.log('end of step 3');
+        console.log(groupfds);
     }
 
 	//Step 4 function, merge equivalent keys, 
     //input : an array of fds in each partitioned grp 
     Bernstein.prototype.step4 = function(groupfds) {
         
+        console.log('before step 4');
+        console.log(groupfds);
+
         var totalGrp = groupfds.length;
         var originalGrpLength = groupfds.length;
         var noAddedPartitionedGrp = 0; 
         
+
         //loop through each groupsfds with the form [Array,Array,Array]
         $.each(groupfds, function(index,sameLHSFds){
 
@@ -65,8 +70,9 @@
             if(sameLHSFds[0] != undefined){
                 var closureSet = closure(sameLHSFds[0].lhs,fds);
             }else{
-                var closureSet = '';
+                var closureSet = ['zzz'];
             }
+
             //loop through the other groupfds 
             for(var i=index+1; i < originalGrpLength; i++ ){
 
@@ -74,39 +80,44 @@
                 var closureSet2 = closure(groupfds[i][0].lhs,fds);
 
                 //if same closure
-                if (arrayEqual(closureSet,closureSet2)){
+                    if (arrayEqual(closureSet,closureSet2)){
 
-                    var message = "found identical closure and creating a new group with LHS="+
-                                    sameLHSFds[0].lhs + ", RHS=" + groupfds[i][0].lhs;
-                    step4Messages.push(message);
-                    
-                    //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
-                    groupfds[totalGrp] = new Array();
+                        var message = "found identical closure and creating a new group with LHS="+
+                                        sameLHSFds[0].lhs + ", RHS=" + groupfds[i][0].lhs;
+                        step4Messages.push(message);
+                        
+                        //create new group with FD of same LHSFds.lhs and groupfds[i][0].lhs 
+                        groupfds[totalGrp] = new Array();
 
-                    //copy a new array if not its copying references 
-                    var tempArrayCopy = clone(groupfds[index]);
-                    var tempArrayCopy2 = clone(groupfds[i]);
+                        console.log('before cloning');
+                        console.log(groupfds);
 
-                    groupfds[totalGrp][0] = new Fd;
-                    groupfds[totalGrp][0].lhs = tempArrayCopy[0].lhs;
-                    groupfds[totalGrp][0].rhs = tempArrayCopy2[0].lhs;
-                    // groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
-                    // groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
+                        //copy a new array if not its copying references 
+                        var tempArrayCopy = clone(groupfds[index]);
+                        var tempArrayCopy2 = clone(groupfds[i]);
 
-                    groupfds[totalGrp][1] = new Fd;
-                    groupfds[totalGrp][1].lhs = tempArrayCopy2[0].lhs;
-                    groupfds[totalGrp][1].rhs = tempArrayCopy[0].lhs;
-                    // groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
-                    // groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
+                        groupfds[totalGrp][0] = new Fd;
+                        groupfds[totalGrp][0].lhs = tempArrayCopy[0].lhs;
+                        groupfds[totalGrp][0].rhs = tempArrayCopy2[0].lhs;
+                        // groupfds[totalGrp][0].lhs = sameLHSFds[0].lhs;
+                        // groupfds[totalGrp][0].rhs = groupfds[i][0].lhs;
 
-                    //loop through all the partitioned group fds and remove X-Y if found 
-                    removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
-                    removeFDFromGroup(groupfds[totalGrp][1],groupfds,originalGrpLength);
+                        groupfds[totalGrp][1] = new Fd;
+                        groupfds[totalGrp][1].lhs = tempArrayCopy2[0].lhs;
+                        groupfds[totalGrp][1].rhs = tempArrayCopy[0].lhs;
+                        // groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
+                        // groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
 
-                    totalGrp++;
+                        console.log('before calling');
+                        console.log(groupfds);
 
-                }
+                        //loop through all the partitioned group fds and remove X-Y if found 
+                        removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
+                        removeFDFromGroup(groupfds[totalGrp][1],groupfds,originalGrpLength);
 
+                        totalGrp++;
+
+                    }
             }
         })
     }
@@ -212,6 +223,8 @@
                     groupfds[groupIndex].splice(i,1);
                     i--;
                     console.log("is transitive");
+                }else{
+                    console.log("not transitive");
                 }
                 // else{
                 //     console.log("not transitive");
@@ -244,6 +257,10 @@
     //comment below will be based on the above input 
     function isTransitive(fdsToCheck,fds){
 
+        console.log('checking transitive for the following');
+        console.log(fdsToCheck);
+        console.log(fds);
+
         //tempFdsSet contains all FD except A->DEF 
         var tempFdsSet = new Array();
 
@@ -257,8 +274,16 @@
         })
 
         //get closure of A without A->DEF inside 
+        console.log('checking closure of');
+        console.log(fdsToCheck.lhs);
+        console.log(tempFdsSet);
+
         var closureAttr = closure(fdsToCheck.lhs,tempFdsSet);
 
+        console.log('closure ==');
+        console.log(closureAttr);
+
+        console.log('end closure ==');
         //if closure contains DEF
         if(contains(fdsToCheck.rhs,closureAttr)){
 
@@ -283,12 +308,20 @@
 
             //segment purpose is to find out if C or B is pointing to A 
 
-            //looping through the entire fds group
+            //============== NOT THIS ISSUE ====================
+            // $.each(fdsSet,function(index,fds){
+            //     if(contains(fdsToCheck.lhs,fds.rhs)){
+            //         transitivePointed = true;
+            //     }
+            // })
+            // ===============================================
+
+
             $.each(fds,function(index,fd){
 
                 if(arrayEqual(fdsToCheck.lhs,fd.lhs)){
 
-                    var pointedToFD = false;
+                    var pointedToFD = false;    
                     $.each(fdsSet,function(innerIndex,fdsSet_fd){
 
                         if(contains(fdsSet_fd.lhs,fd.rhs)){
@@ -334,7 +367,7 @@
 
                 if(setIndex!=0){
 
-                    $.each(setFds[0].rhs,function(index,rhs_attr){
+                    $.each(setFds[setIndex].rhs,function(index,rhs_attr){
                         setFds[0].rhs.push(rhs_attr);    
                     })
                     

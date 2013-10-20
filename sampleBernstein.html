@@ -7,15 +7,19 @@
     <link rel="stylesheet" type="text/css" href="css/bootmetro-icons.css">
     <link rel="stylesheet" type="text/css" href="css/bootmetro-ui-light.css">
     <link rel="shortcut icon" href="ico/favicon.ico">
-    
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="js/modernizr-2.6.2.min.js"></script>
 
     <!-- bernstein related files-->
     <script src="objects.js"></script>
     <script src="util.js"></script>
     <script src="global.js"></script>
+    <script src="print.js"></script>
     <script src="bernstein.js"></script>
+    <script src="bernstein_p1.js"></script>
+    <script src="reconstruct.js"></script>
+    <script src="test.js"></script>
   </head>
   <body>
     <div class="row">
@@ -76,10 +80,10 @@
               <select multiple="multiple" class="span3" id="fdLHS" disabled>
               </select>
             </div>
-            <div class="span1 text-center">
-              <h1 style="font-size:500%">&#8594;</h1>
+            <div class="span3 text-center">
+              <h1 style="font-size:500%; text-align:center">&#8594;</h1>
             </div>
-            <div class="span3">
+            <div class="span4">
               <select multiple="multiple" class="span3" id="fdRHS" disabled>
               </select>
             </div>
@@ -87,10 +91,10 @@
           </div>
           <div class="row"><div>&nbsp;</div></div>
           <div class="row">
-            <div class="span4" id="fds">
+            <div class="span5" id="fds">
 
             </div>
-            <div class="span3">
+            <div class="span4">
               <button type="button" class="btn pull-right" id="addFd" disabled>Add Functional Dependency</button>
             </div>
           </div>
@@ -111,23 +115,39 @@
               <select multiple="multiple" class="span3" id="mvdLHS" disabled>
               </select>
             </div>
-            <div class="span1 text-center">
-              <h1 style="font-size:500%">&#8608;</h1>
+            <div class="span3 text-center">
+              <h1 style="font-size:500%; text-align:center">&#8608;</h1>
             </div>
-            <div class="span3">
+            <div class="span4">
               <select multiple="multiple" class="span3" id="mvdRHS" disabled>
               </select>
             </div>
           </div>
           <div class="row"><div>&nbsp;</div></div>
           <div class="row">
-            <div class="span4" id="mvds">
+            <div class="span5" id="mvds">
             </div>
-            <div class="span3">
+            <div class="span4">
               <button type="button" class="btn pull-right" id="addMvd" disabled>Add Multi-valued Dependency</button>
             </div>
           </div>
           <script type="text/javascript" src="mvd.js"></script>
+          <div class="row"><div>&nbsp;</div></div>
+        </div>
+      </div>
+      <div class="row"><div>&nbsp;</div></div>
+      <div class="row">
+        <div class="span11 offset1" id="section_init">
+          <div class="row">
+            <div class="span5" id="empty">
+            </div>
+            <div class="span4">
+              <button type="button" class="btn pull-right" id="startBernstein" disabled>
+                Start Bernstein's Algorithm
+              </button>
+            </div>
+          </div>
+          <script type="text/javascript" src="start.js"></script>
           <div class="row"><div>&nbsp;</div></div>
         </div>
       </div>
@@ -138,8 +158,7 @@
         <div class="span11 offset1" id="section_console">
           <div class="row"><div>&nbsp;</div></div>
           <div class="row">
-            <div class="span7" id="console">
-              Sample Output
+            <div class="span12" id="console">
             </div>
           </div>
           <div class="row"><div>&nbsp;</div></div>
@@ -163,19 +182,24 @@
 
 
           $('#bernStep3').click( function() {
-              Bernstein.step3(fds);
+              console.log('calling step 3!');
+               Bernstein.step3(fds);
+              console.log(groupfds);
           });
 
 
           $('#bernStep4').click( function() {
+              console.log('calling step 4!');
               Bernstein.step4(groupfds);
           });
 
           $('#bernStep5').click( function() {
+              console.log('calling step 5!');
               Bernstein.step5(groupfds);
           });
 
           $('#bernStep6').click( function() {
+              console.log('calling step 6!');
               Bernstein.step6(groupfds);
           });
       </script>
