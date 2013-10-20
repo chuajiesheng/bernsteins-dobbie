@@ -282,8 +282,8 @@
 
         console.log('closure ==');
         console.log(closureAttr);
-
         console.log('end closure ==');
+
         //if closure contains DEF
         if(contains(fdsToCheck.rhs,closureAttr)){
 
@@ -300,11 +300,30 @@
 
                     //found the guy that pointed to either (B,E or F)
                     if(contains(attr,fd.rhs)){
-                        fdsSet.push(fd);
+
+                        if(_.intersection(fd.lhs,fdsToCheck.lhs).length == 0){
+                            
+                            fdsSet.push(fd);                            
+                        }
+
                     }
                 })
 
             })
+
+            console.log('fdsSet ==');
+            console.log(fdsSet);
+            console.log('end fdsSet ==');
+
+            //no chance of transitive 
+            if (fdsSet.length ==0)
+                return false;
+
+            /*
+            fdsSet now contains all functional dependencies that
+            was pointing to the closure attribute 
+            
+            */
 
             //segment purpose is to find out if C or B is pointing to A 
 
@@ -316,12 +335,15 @@
             // })
             // ===============================================
 
-
+            //looping through all the functional dependencies
             $.each(fds,function(index,fd){
 
+                //if the functional dependencies has the same LHS as the 
+                //to check FDS 
                 if(arrayEqual(fdsToCheck.lhs,fd.lhs)){
 
                     var pointedToFD = false;    
+
                     $.each(fdsSet,function(innerIndex,fdsSet_fd){
 
                         if(contains(fdsSet_fd.lhs,fd.rhs)){
@@ -329,6 +351,7 @@
                         }
 
                     })
+
                     if(pointedToFD == false){
                         transitivePointed = true;
                     }
