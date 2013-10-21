@@ -164,5 +164,45 @@
           <div class="row"><div>&nbsp;</div></div>
         </div>
       </div>
+
+        <div>
+          <button type="button" class="btn pull-right" id="bernStep1" >Call Step 1 (or start bernstein)</button>
+          <button type="button" class="btn pull-right" id="bernStep2" >Call Step 2</button>
+          <button type="button" class="btn pull-right" id="bernStep3" >Call Step 3</button>
+          <button type="button" class="btn pull-right" id="bernStep4" >Call Step 4</button>
+          <button type="button" class="btn pull-right" id="bernStep5" >Call Step 5</button>
+          <button type="button" class="btn pull-right" id="bernStep6" >Call Step 6</button>
+      </div>
+      <script>
+
+          //start bernstein calculation 
+          $('#bernStep1').click( function() {
+              console.log("lol");
+          });
+
+
+          $('#bernStep3').click( function() {
+              console.log('calling step 3!');
+               Bernstein.step3(fds);
+              console.log(groupfds);
+          });
+
+
+          $('#bernStep4').click( function() {
+              console.log('calling step 4!');
+              Bernstein.step4(groupfds);
+          });
+
+          $('#bernStep5').click( function() {
+              console.log('calling step 5!');
+              Bernstein.step5(groupfds);
+          });
+
+          $('#bernStep6').click( function() {
+              console.log('calling step 6!');
+              Bernstein.step6(groupfds);
+          });
+      </script>
+      
   </body>
 </html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Bernstein Algorithm testing</title>
+
+  <link rel="stylesheet" type="text/css" href="css/jasmine/jasmine.css">
+  <script type="text/javascript" src="js/jasmine/jasmine.js"></script>
+  <script type="text/javascript" src="js/jasmine/jasmine-html.js"></script>
+
+  <!-- include source files here... -->
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+  <script src="js/modernizr-2.6.2.min.js"></script>
+
+  <!-- bernstein related source files-->
+  <script src="objects.js"></script>
+  <script src="util.js"></script>
+  <script src="global.js"></script>
+  <script src="print.js"></script>
+  <script src="bernstein.js"></script>
+  <script src="bernstein_p1.js"></script>
+  <script src="reconstruct.js"></script>
+  <script src="test.js"></script>
+
+  <!-- validation files -->
+  <script type="text/javascript" src="validation.js"></script>
+  <script type="text/javascript" src="fd.js"></script>
+  <script type="text/javascript" src="attribute.js"></script>
+  <script type="text/javascript" src="mvd.js"></script>
+  <script type="text/javascript" src="start.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="js/testCases/BernsteinTest.js"></script>
+
+  <script type="text/javascript">
+  (function() {
+    var jasmineEnv = jasmine.getEnv();
+    jasmineEnv.updateInterval = 1000;
+
+    var htmlReporter = new jasmine.HtmlReporter();
+
+    jasmineEnv.addReporter(htmlReporter);
+
+    jasmineEnv.specFilter = function(spec) {
+      return htmlReporter.specFilter(spec);
+    };
+
+    var currentWindowOnload = window.onload;
+
+    window.onload = function() {
+      if (currentWindowOnload) {
+        currentWindowOnload();
+      }
+      execJasmine();
+    };
+
+    function execJasmine() {
+      jasmineEnv.execute();
+    }
+
+  })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>

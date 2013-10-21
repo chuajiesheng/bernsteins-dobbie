@@ -183,8 +183,14 @@
 
           $('#bernStep3').click( function() {
               console.log('calling step 3!');
-               Bernstein.step3(fds);
+              console.log('fds pass in');
+              console.log(fds);
+              console.log('end of fds');
+              
+              Bernstein.step3(fds);
+              console.log('step 3 result');
               console.log(groupfds);
+              console.log('end of step 3')
           });
 
 
