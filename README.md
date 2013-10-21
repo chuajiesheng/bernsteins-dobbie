@@ -3,6 +3,24 @@ bernsteins-dobbie
 
 Teaching Aid for Bernstein’s Algorithm with Step-by-step Explanation
 
+Running the test
+=================
+- open testCases.html at the root folder and open it 
+
+Adding test cases (js/testCases/BernsteinTest.js)
+================= 
+
+    //sample test cases
+    describe("Title of this test cases", function() {
+      
+      it("Sub-title of each test cases", function() {
+          expect(true).toBe(true);
+      });
+
+      it("Sub-title of each test cases", function() {
+          expect(true).toBe(true);
+      });
+    }
 
 Step 6 output
 =================
