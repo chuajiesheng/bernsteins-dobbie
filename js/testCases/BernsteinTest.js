@@ -18,3 +18,18 @@ describe("Testing step 1 of Bernstein", function() {
   });
 
 });
+
+//sample test cases
+describe("Title of this test cases", function() {
+  
+  it("Sub-title of each test cases", function() {
+    
+    expect(true).toBe(true);
+  });
+
+  it("Sub-title of each test cases", function() {
+    
+    expect(true).toBe(true);
+  });
+
+});
