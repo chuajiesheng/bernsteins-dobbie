@@ -53,6 +53,10 @@ function arrToStr(arr) {
 var R = function (name, key, attr) {
     this.name = name;
     this.key = key;
+
+    if (Array.isArray(attr)) {
+        attr = _.flatten(attr);
+    }
     attr = _.unique(attr, true);
     this.attr = attr
 
