@@ -50,7 +50,7 @@ function reconstruct(groupfds) {
     var att2 = [];
 
     if (Array.isArray(rels) && rels.length > 0) {
-        att = rels[0].key.concat(rels[0].attr);
+        att = rels[0].all_attrs();
         print_message('Starting with first relation object: ' + rels[0].html())
     }
 
@@ -58,7 +58,7 @@ function reconstruct(groupfds) {
         att2 = att;
 
         for (var i = 1; i < rels.length; i++) {
-            var allAttr = rels[i].key.concat(rels[i].attr);
+            var allAttr = rels[i].all_attrs();
             var intersect = intersection(att, allAttr);
             if (intersect.length > 0) {
                 var combine = att.concat(allAttr);
@@ -88,7 +88,7 @@ function reconstruct(groupfds) {
 
     // loop for each missing attribute
     for (var i = 0; i < missing.length; i++) {
-        console.log('[reconstruct] checking missing attribute, ' + missing[i]);
+        console.log('[reconstruct] checking missing attribute in fds, ' + missing[i]);
         var inAnyFd = false;
 
         // find if the missing belong to any fd
@@ -133,9 +133,58 @@ function reconstruct(groupfds) {
     }
 
     missing = difference(missing, found);
+    found = [];
+
+    // search in mvd
+    for (var i = 0; i < missing.length; i++) {
+        console.log('[reconstruct] checking missing attribute in mvds, ' + missing[i]);
+        var inAnyMvd = false;
+
+        for (var j = 0; j < mvds.length; j++) {
+            console.log('[reconstruct] checking mvd, ' + mvds[j].str());
+            // in the lhs?
+            var lhs = mvds[j].lhs;
+            var inLHS = contains([missing[i]], lhs);
+
+            // in the rhs?
+            var rhs = mvds[j].rhs;
+            var inRHS = contains([missing[i]], rhs);
+
+            inAnyMvd =  inLHS || inRHS;
+
+            if (inAnyMvd) {
+                found.push(missing[i]);
+                console.log('is in mvd: ' + mvds[j].str());
+                print_message('Found missing attribute, \''
+                              + missing[i] + '\'' + ' in ' + mvds[j].str());
+
+                var allAttr = lhs.concat(rhs);
+                var r = new R('R' + rels.length, lhs.concat(rhs), []);
+                rels.push(r);
+
+                print_message('New relation for missing attribute, ' + r.html());
+
+                // look forward and remove
+                console.log('looking forward');
+                for (var k = i + 1; k < missing.length; k++) {
+                    if (allAttr.indexOf(missing[k]) > -1) {
+                        // this attr in the new relation too, therefore remove
+                        var removed = missing.splice(k, 1);
+                        found.push(removed);
+                        print_message('Found ' + removed + ' in the new relation');
+                    }
+                }
+            } else {
+                // not in this mvd
+            }
+        }
+
+    }
+
+    missing = difference(missing, found);
     if (missing.length > 0) {
         // these attr still missing
-        print_message('Unable to find any FD containing these attributes: ' + missing);
+        print_message('Unable to find any FD/MVD containing these attributes: ' + missing);
     }
 
     res = '';

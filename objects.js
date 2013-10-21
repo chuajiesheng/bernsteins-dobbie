@@ -35,13 +35,49 @@ var Mvd = function (lhs, rhs) {
 }
 Mvd.prototype = new Mvd();
 
+function arrToStr(arr) {
+    var s = '';
+
+    if (Array.isArray(arr)) {
+        for (var i = 0; i < arr.length; i++) {
+            s += arr[i];
+            if (i < (arr.length - 1)) {
+                s += ', ';
+            }
+        }
+    }
+
+    return s;
+}
+
 var R = function (name, key, attr) {
     this.name = name;
-    key = _.unique(key, true);
     this.key = key;
     attr = _.unique(attr, true);
     this.attr = attr
 
+    this.all_attrs = function () {
+        var all = [];
+
+        var isArrayOfArray = false;
+        for (var i = 0; i < key.length; i++) {
+            if (Array.isArray(key[i])) {
+                isArrayOfArray = true;
+            }
+        }
+
+        if (isArrayOfArray) {
+            for (var i = 0; i < key.length; i++) {
+                all = all.concat(key[i]);
+            }
+        } else {
+            all = all.concat(key);
+        }
+
+        all = all.concat(attr);
+
+        return all;
+    }
     this.html = function () {
         var s = name;
 
@@ -49,21 +85,30 @@ var R = function (name, key, attr) {
             s += '()';
         } else {
             s += '(';
-            s += '<u>';
-            for (i = 0; i < key.length; i++) {
-                s += key[i];
-                if (i < (key.length - 1)) {
-                    s += ', ';
+
+            var isArrayOfArray = false;
+            for (var i = 0; i < key.length; i++) {
+                if (Array.isArray(key[i])) {
+                    isArrayOfArray = true;
                 }
             }
-            s += '</u>';
-            s += ', ';
-            for (i = 0; i < attr.length; i++) {
-                s+= attr[i];
-                if (i < (attr.length - 1)) {
-                    s+= ', ';
+
+            if (isArrayOfArray) {
+                for (var i = 0; i < key.length; i++) {
+                    s += '<u>' + arrToStr(key[i]) + '</u>';
+                    if (i < key.length - 1) {
+                        s += ', ';
+                    }
                 }
+            } else {
+                s += '<u>' + arrToStr(key) + '</u>';
             }
+
+            if (attr.length > 0) {
+                s += ', ';
+                s += arrToStr(attr);
+            }
+
             s += ')';
         }
         return s;
@@ -75,18 +120,30 @@ var R = function (name, key, attr) {
             s += '()';
         } else {
             s += '(';
-            for (i = 0; i < key.length; i++) {
-                s += key[i];
-                if (i < (key.length - 1)) {
-                    s+= ', ';
+
+            var isArrayOfArray = false;
+            for (var i = 0; i < key.length; i++) {
+                if (Array.isArray(key[i])) {
+                    isArrayOfArray = true;
                 }
             }
-            for (i = 0; i < attr.length; i++) {
-                s+= attr[i];
-                if (i < (attr.length - 1)) {
-                    s+= ', ';
+
+            if (isArrayOfArray) {
+                for (var i = 0; i < key.length; i++) {
+                    s += arrToStr(key[i]);
+                    if (i < key.length - 1) {
+                        s += ', ';
+                    }
                 }
+            } else {
+                s += arrToStr(key);
             }
+
+            if (attr.length > 0) {
+                s += ', ';
+                s += arrToStr(attr);
+            }
+
             s += ')';
         }
         return s;
