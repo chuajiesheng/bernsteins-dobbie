@@ -47,16 +47,12 @@
 
         initialGroupfdsLength = groupfds.length;
 
-        console.log('end of step 3');
-        console.log(groupfds);
     }
 
 	//Step 4 function, merge equivalent keys, 
     //input : an array of fds in each partitioned grp 
     Bernstein.prototype.step4 = function(groupfds) {
         
-        console.log('before step 4');
-        console.log(groupfds);
 
         var totalGrp = groupfds.length;
         var originalGrpLength = groupfds.length;
@@ -110,8 +106,8 @@
                         // groupfds[totalGrp][1].lhs = groupfds[i][0].lhs;
                         // groupfds[totalGrp][1].rhs = sameLHSFds[0].lhs;
 
-                        console.log('before calling');
-                        console.log(groupfds);
+                        // console.log('before calling');
+                        // console.log(groupfds);
 
                         //loop through all the partitioned group fds and remove X-Y if found 
                         removeFDFromGroup(groupfds[totalGrp][0],groupfds,originalGrpLength);
@@ -122,6 +118,7 @@
                     }
             }
         })
+
     }
 
     //eg. remove FDS of X->Y from groupfds
@@ -129,10 +126,10 @@
     //Case 2: if groupFDS contains Y->XZ, change it to only Y->Z 
     function removeFDFromGroup(fdsToRemove,groupfds,initialGroupFdsLength){
 
-        console.log('came inside remove FD From Group with');
-        console.log(fdsToRemove);
-        console.log(groupfds);
-        console.log(initialGroupFdsLength);
+        // console.log('came inside remove FD From Group with');
+        // console.log(fdsToRemove);
+        // console.log(groupfds);
+        // console.log(initialGroupFdsLength);
 
         for(var i=0;i<initialGroupFdsLength;i++){
 
@@ -202,6 +199,7 @@
     //Step 5 function eliminate transitive dependency
     Bernstein.prototype.step5 = function(groupfds) {
 
+
         //convert the group fds to the fds 
         var tempfdsSet = getAllFdsFromGroupFds(groupfds);
 
@@ -234,7 +232,6 @@
             }
         });
 
-
     }
 
     //function convert the groupfds which is array of arrays of FDS into arrays of FDS
@@ -258,9 +255,9 @@
     //comment below will be based on the above input 
     function isTransitive(fdsToCheck,fds){
 
-        console.log('checking transitive for the following');
-        console.log(fdsToCheck);
-        console.log(fds);
+        // console.log('checking transitive for the following');
+        // console.log(fdsToCheck);
+        // console.log(fds);
 
         //tempFdsSet contains all FD except A->DEF 
         var tempFdsSet = new Array();
@@ -275,15 +272,15 @@
         })
 
         //get closure of A without A->DEF inside 
-        console.log('checking closure of');
-        console.log(fdsToCheck.lhs);
-        console.log(tempFdsSet);
+        // console.log('checking closure of');
+        // console.log(fdsToCheck.lhs);
+        // console.log(tempFdsSet);
 
         var closureAttr = closure(fdsToCheck.lhs,tempFdsSet);
 
-        console.log('closure ==');
-        console.log(closureAttr);
-        console.log('end closure ==');
+        // console.log('closure ==');
+        // console.log(closureAttr);
+        // console.log('end closure ==');
 
         //if closure contains DEF
         if(contains(fdsToCheck.rhs,closureAttr)){
@@ -361,9 +358,10 @@
 		//yay simple as it is, convert all to the relation 
     Bernstein.prototype.step6= function(groupfds) {
 
+
         //fds = getAllFdsFromGroupFds(groupfds);
 
-        console.log(initialGroupfdsLength);
+        // console.log(initialGroupfdsLength);
 
         step6JIndex = initialGroupfdsLength;
 
@@ -413,8 +411,8 @@
 
             for(var j= initialGroupfdsLength;j<groupfds.length;j++){
                 
-                console.log('comparing jehe with j=='+j);
-                console.log(groupfds[j]);
+                // console.log('comparing jehe with j=='+j);
+                // console.log(groupfds[j]);
                 
                 $.each(groupfds[j][0].lhs,function(index,allKeyLhs){
 
@@ -439,6 +437,37 @@
 
         }
 
+        //calling the R 
+        for(var i =0;i<initialGroupfdsLength;i++){
+            if(groupfds[i].lhs !=undefined){
+                console.log('pushing R with');
+                console.log(i);
+                console.log(groupfds[i].lhs);
+                console.log(groupfds[i].rhs);
+
+               rels.push(new R(i,groupfds[i].lhs,groupfds[i].rhs));
+            }
+        }
+
+        for(var i=initialGroupfdsLength; i < groupfds.length; i++){
+            
+            var tempLeftArray = new Array();
+            var tempRightArray = new Array();
+            console.log('printing weird grp');
+            console.log(groupfds[i]);
+
+            $.each(groupfds[i],function(index,fd){
+                $.each(fd.lhs,function(innerIndex,lhs_attr){
+                    tempLeftArray.push(lhs_attr);    
+                })
+                $.each(fd.rhs,function(innerIndex,rhs_attr){
+                    tempRightArray.push(rhs_attr);    
+                })
+
+            })    
+
+            rels.push(new R(i,tempLeftArray,tempRightArray));
+        }
 
     }
 
