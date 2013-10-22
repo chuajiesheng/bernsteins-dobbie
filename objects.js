@@ -13,6 +13,9 @@ var Fd = function (lhs, rhs) {
         }
         return fd;
     }
+    this.clone = function () {
+        return new Fd(lhs, rhs);
+    }
 }
 Fd.prototype = new Fd();
 
@@ -31,6 +34,9 @@ var Mvd = function (lhs, rhs) {
             fd += rhs[i] + ' ';
         }
         return fd;
+    }
+    this.clone = function () {
+        return new Mvd(lhs, rhs);
     }
 }
 Mvd.prototype = new Mvd();
