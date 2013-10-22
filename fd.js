@@ -75,6 +75,11 @@ $('#addFd').on('click', function () {
         $(this).prop('selected', false)
     });
 
+    if (lhs.length < 1 || rhs.length < 1) {
+        console.log('invalid fds');
+        return;
+    }
+
     var fd = new Fd(lhs, rhs);
 
     var duplicate = false;
