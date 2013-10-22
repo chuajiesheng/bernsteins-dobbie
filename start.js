@@ -1,6 +1,17 @@
+function clone(init, copy) {
+    $.each(init, function(index, value) {
+        var duplicateValue = $.extend(true, {}, value);
+        copy.push(duplicateValue)
+    });
+}
+
 $('#startBernstein').on('click', function () {
     console.log('start bernstein algorithm');
     clear();
+
+    // copy
+    clone(fds, fds2);
+    clone(mvds, mvds2);
 
     // start bernstein algorithm here
     // step 1
