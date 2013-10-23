@@ -78,8 +78,8 @@
                 //if same closure
                     if (arrayEqual(closureSet,closureSet2)){
 
-                        var message = "found identical closure and creating a new group with"+
-                                        sameLHSFds[0].lhs + "->" + groupfds[i][0].lhs;
+                        var message = "Found identical closure and creating a new group with " +
+                            sameLHSFds[0].lhs + " " + String.fromCharCode(8594) + " " + groupfds[i][0].lhs;
                         print_message(message);
                         step4Messages.push(message);
 

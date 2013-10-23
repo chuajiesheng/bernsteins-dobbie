@@ -55,9 +55,57 @@ function covering(att, fds) {
     return res2;
 }
 
+function rhsSetSubtraction(fds) {
+    // sort
+    var uniqueLHS = [];
+    for (var i = 0; i < fds.length; i++) {
+        uniqueLHS = uniqueAdd(fds[i].lhs, uniqueLHS);
+    }
+
+    // init lhs array
+    var sortedFds = [];
+    for (var i = 0; i < uniqueLHS.length; i++) {
+        sortedFds.push([]);
+    }
+
+    // sort the fds
+    for (var i = 0; i < fds.length; i++) {
+        var lhs = fds[i].lhs;
+
+        for (var j = 0; j < sortedFds.length; j++) {
+            if (arrayEqual(lhs, uniqueLHS[j])) {
+                sortedFds[j].push(fds[i]);
+                break;
+            }
+        }
+    }
+
+    // set difference
+    $.each(sortedFds, function(index, array) {
+        for (var i = 0; i < array.length; i++) {
+            var rhs = array[i].rhs;
+            var initStr = array[i].str();
+            var initLength = rhs.length;
+
+            for (var j = 0; j < array.length; j++) {
+                if (i != j) {
+                    // not myself
+                    newRHS = _.difference(rhs, array[j].rhs);
+                    if (newRHS.length != initLength) {
+                        array[i] = new Fd(array[i].lhs, newRHS);
+                        console.log('fds have changed from, \''
+                                    + initStr + '\' to \''
+                                    + array[i].str());
+                    }
+                }
+            }
+        }
+    });
+}
 
 function step1(fds) {
     print_message("Find redundant attribute for each LHS");
+
     for (var i=0;i<fds.length;i++)
     {
         //get closure for attributes on LHS
@@ -91,6 +139,8 @@ function step1(fds) {
 
 
 function step2(fds) {
+    rhsSetSubtraction(fds);
+
     for (var i=0;i<fds.length;i++)
     {
         fds = covering(fds[i].lhs, fds);

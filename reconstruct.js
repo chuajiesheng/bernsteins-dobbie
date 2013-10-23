@@ -184,7 +184,7 @@ function reconstruct(groupfds) {
     missing = difference(missing, found);
     if (missing.length > 0) {
         // these attr still missing
-        print_message('Unable to find any FD/MVD containing these attributes: ' + missing);
+        print_message('Unable to find any intersection with these attributes: ' + missing);
     }
 
     res = '';

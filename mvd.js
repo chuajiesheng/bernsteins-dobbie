@@ -75,6 +75,11 @@ $('#addMvd').on('click', function () {
         $(this).prop('selected', false)
     });
 
+    if (lhs.length < 1 || rhs.length < 1) {
+        console.log('invalid mvds');
+        return;
+    }
+
     var mvd = new Mvd(lhs, rhs);
 
     var duplicate = false;

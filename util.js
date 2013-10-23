@@ -71,8 +71,16 @@ function close(att, fds) {
 }
 
 function arrayEqual(a, b) {
-    sortedA = a.sort();
-    sortedB = b.sort();
+    var sortedA = a;
+    if (Array.isArray(a)) {
+        sortedA = a.sort();
+    }
+
+    var sortedB = b;
+    if (Array.isArray(b)) {
+        sortedB = b.sort();
+    }
+
 
     if (sortedA.length != sortedB.length) {
         return false;
