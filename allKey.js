@@ -179,22 +179,6 @@ function close(att, fds) {
     return res;
 }
 
-function arrayEqual(a, b) {
-    sortedA = a.sort();
-    sortedB = b.sort();
-
-    if (sortedA.length != sortedB.length) {
-        return false;
-    } else {
-        for (var i = 0; i < sortedA.length; i++) {
-            if (sortedA[i] != sortedB[i]) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 // sample input, att = 'a', fds = fds (in global.js)
 function closure(att, fds) {
     var res = close(att, fds);
