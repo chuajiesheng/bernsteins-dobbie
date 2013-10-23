@@ -5,19 +5,14 @@ $('#startBernstein').on('click', function () {
     // start bernstein algorithm here
     // step 1
     // pass in fds, return fds
-    print_title('Step 1');
-    fds = step1(fds);
-    console.log('fds');
-    console.log(fds);
-    console.log('end fds');
+    // print_title('Step 1');
+    // fds = step1(fds);
 
-    // step 2
-    // pass in fds, return fds
-    print_title('Step 2');
-    fds = step2(fds);
-    console.log('fds 2-- ');
-    console.log(fds);
-    console.log('end fds');
+    // // step 2
+    // // pass in fds, return fds
+    // print_title('Step 2');
+    // fds = step2(fds);
+    
     // step 3
     print_title('Step 3');
     Bernstein.step3(fds);
