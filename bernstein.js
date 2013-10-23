@@ -205,7 +205,6 @@
     Bernstein.prototype.step5 = function(groupfds) {
 
 
-
         //convert the group fds to the fds 
         var tempfdsSet = getAllFdsFromGroupFds(groupfds);
 
@@ -223,9 +222,9 @@
                     //console.log(isTransitive(setFds[i],tempfdsSet));
                     if (isTransitive(setFds[i],tempfdsSet)){
 
-                        // var message = setFds[i].str() + " is a transitive attribute, removing it from the group";
-                        // step5Messages.push(message);
-                        // print_message(message);
+                        var message = setFds[i].str() + " is a transitive attribute, removing it from the group";
+                        step5Messages.push(message);
+                        print_message(message);
 
                         //is transitive, remove that fds from the group 
 
