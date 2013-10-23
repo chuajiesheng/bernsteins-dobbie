@@ -23,7 +23,7 @@ $('#startBernstein').on('click', function () {
     // pass in fds, return fds
     print_title('Step 2');
     fds = step2(fds);
-    
+
     // step 3
     print_title('Step 3');
     Bernstein.step3(fds);
@@ -41,10 +41,10 @@ $('#startBernstein').on('click', function () {
     Bernstein.step6(groupfds);
 
     // // reconstruct
-    // print_title('Checking reconstructibility');
-    // reconstruct(groupfds);
+    print_title('Checking reconstructibility');
+    reconstruct(groupfds);
 
     // // find all key
-    // print_title('Finding all possible keys');
+    print_title('Finding all possible keys');
 
 });
