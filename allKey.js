@@ -374,6 +374,7 @@ function step8(fds) {
     var tempFinalKey=[];
     var tempKR=[];
     var temptemp=[];
+    var finalKey=[];
     
 
     
