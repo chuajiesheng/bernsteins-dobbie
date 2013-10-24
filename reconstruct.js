@@ -192,4 +192,6 @@ function reconstruct(groupfds) {
         res += rels[i].html() + ' ';
     }
     print_message('Result: ' + res);
+
+    return missing;
 }
