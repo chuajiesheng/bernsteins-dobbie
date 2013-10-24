@@ -60,7 +60,7 @@ $('#startBernstein').on('click', function () {
     print_title('Finding all possible keys');
     groupfds=step7(fds2);
 
-    print_title('Finding all possible Missing keys');
+    print_title('Finding all possible missing keys');
     groupfds=step8(fds);
 
 });
