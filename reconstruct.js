@@ -41,7 +41,7 @@ function reconstruct(groupfds) {
     for (var i = 0; i < list.length; i++) {
         var r = new R('R' + i, list[i].lhs, list[i].rhs);
         rels.push(r);
-        print_message('Constructed relation object: ' + r.html());
+        //print_message('Constructed relation object: ' + r.html());
     }
     console.log(rels);
 
