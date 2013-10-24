@@ -191,17 +191,15 @@ function step7(fds) {
 
     for (var k = 0; k < keyResult.length; k++)
     {
-        var tempKeyResult = [];
-        tempKeyResult = keyResult[k];
-        tempKeyResult = tempKeyResult[0];
+        var tempKeyResult = "";
 
-        for( var l = 0; l < tempKeyResult.length; l++)
+        for( var l = 0; l < keyResult[k].length; l++)
         {
-            tempKeyResult=tempKeyResult + tempKeyResult[l];
+            tempKeyResult += keyResult[k][l];
         }
 
-        console.log("Key" + (k+1) + " : " + tempKeyResult);
-        print_message("Key" + (k+1) + " : " + tempKeyResult);
+        console.log("Key " + (k+1) + ": " + tempKeyResult);
+        print_message("Key " + (k+1) + ": " + tempKeyResult);
         tempKeyResult = "";
     }
     return groupfds;
