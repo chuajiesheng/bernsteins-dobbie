@@ -348,6 +348,7 @@ for (var k=0;k<keyResult.length;k++)
         tempKeyResult=tempKeyResult + tempKeyResult[k];
     }
     console.log("Key" + (k+1) + " : " + tempKeyResult);
+    print_message("Key" + (k+1) + " : " + tempKeyResult);
     tempKeyResult="";
 }
 
