@@ -30,27 +30,21 @@ function cover(att, fds, z) {
         if (i == z) {}
         else{
             if (contains(lhs, res)) {
-                if (lhs == fds[z].lhs) {
-                    rhs = removeCover(res, rhs);
-                    fds[i] = new Fd(lhs, rhs);
-                    if (rhs.length == 0){
-                        console.log("here"); 
-                        fds.splice(i, 1); 
-                   } else {
-                    newR = uniqueAdd(res, rhs);
-                    res = newR;
-                    }
-                }
+                if (lhs == fds[z].lhs) {} 
+                else {
                 newR = uniqueAdd(res, rhs);
                 res = newR;
+                }
             }
         }
-    }
-    
+    }    
     lhs1 = fds[z].lhs;
     rhs1 = fds[z].rhs;  
-    rhs1 = removeCover(res, rhs1);
-    fds[z] = new Fd(lhs1, rhs1);
+    rhs2 = removeCover(res, rhs1);
+    if (rhs1.length !=0 && rhs2.length == 0) {
+        print_message(fds[z].str() + " is removed as it is a non-redundant covering.");
+    }
+    fds[z] = new Fd(lhs1, rhs2);
 
     return fds;
 }
@@ -167,7 +161,7 @@ function step1(fds) {
 
 
 function step2(fds) {
-    rhsSetSubtraction(fds);
+    //rhsSetSubtraction(fds);
 	
 	for (var i=0;i<fds.length;i++)
     {
@@ -186,7 +180,7 @@ function step2(fds) {
                 removedRHS = _.intersection(rhs, lhsClosureEx);
                 rhs = _.difference(rhs, lhsClosureEx);
                  if (removedRHS.length > 0){
-                     print_message(removedRHS + " is determined by " + lhsCheck + ", hence it can be removed." );
+                     print_message(removedRHS + " is determined by " + lhsCheck + ", hence it can be removed from " + fds[j].str());
                      fds[j] = new Fd(lhs,rhs);
                  }
              }
@@ -201,7 +195,6 @@ function step2(fds) {
     
       for (var j = 0; j < fds.length; j++) { 
          if (fds[j].rhs.length == 0){
-               
              fds.splice(j, 1); 
          } 
     }
