@@ -23,12 +23,12 @@ describe("Testing step 2 of Bernstein algo", function() {
 
   })
 
-  it("Given: AB->C && C->D && A->D and expected that A->D will be redundant",function(){
+  it("Given: AB->C && C->D && A->D and expected no redundancies",function(){
 
     var fds = new Array();
     fds[0] = new Fd(["A","B"],["C"]);
     fds[1] = new Fd(["C"],["D"]);
-    fds[1] = new Fd(["A"],["D"]);
+    fds[2] = new Fd(["A"],["D"]);
 
     window.fds = fds;
     window.groupfds = new Array();
@@ -38,18 +38,19 @@ describe("Testing step 2 of Bernstein algo", function() {
     var expectedfds = new Array();
     expectedfds[0] = new Fd(["A","B"],["C"]);
     expectedfds[1] = new Fd(["C"],["D"]);
+    expectedfds[2] = new Fd(["A"],["D"]);
 
     var result = dependencyArrayEqual(step2fds,expectedfds);
     expect(result).toBe(true);
 
   })
 
-  it("Given: AB->C && C->DE && A->E and expected that A->E will be redundant",function(){
+  it("Given: A->C && C->DE && A->E and expected that A->E will be redundant",function(){
 
     var fds = new Array();
-    fds[0] = new Fd(["A","B"],["C"]);
+    fds[0] = new Fd(["A"],["C"]);
     fds[1] = new Fd(["C"],["D","E"]);
-    fds[1] = new Fd(["A"],["E"]);
+    fds[2] = new Fd(["A"],["E"]);
 
     window.fds = fds;
     window.groupfds = new Array();
@@ -57,7 +58,7 @@ describe("Testing step 2 of Bernstein algo", function() {
     var step2fds = step2(fds);
 
     var expectedfds = new Array();
-    expectedfds[0] = new Fd(["A","B"],["C"]);
+    expectedfds[0] = new Fd(["A"],["C"]);
     expectedfds[1] = new Fd(["C"],["D","E"]);
 
     var result = dependencyArrayEqual(step2fds,expectedfds);

@@ -66,19 +66,24 @@
     //input : an array of fds in each partitioned grp 
     Bernstein.prototype.step4 = function(groupfds) {
         
-
         var totalGrp = groupfds.length;
         var originalGrpLength = groupfds.length;
         
         var noAddedPartitionedGrp = 0; 
-        
 
         //loop through each groupsfds with the form [Array,Array,Array]
         $.each(groupfds, function(index,sameLHSFds){
 
             //given LHS, find the closure 
             if(sameLHSFds[0] != undefined){
-                var closureSet = closure(sameLHSFds[0].lhs,fds);
+                console.log('putting in closure');
+                console.log(sameLHSFds[0].lhs);
+                console.log(fds);
+                if(sameLHSFds[0].lhs.length!=1){
+                    var closureSet = closure(sameLHSFds[0].lhs,fds);
+                }else{
+                    var closureSet = closure(sameLHSFds[0].lhs,fds);
+                }
             }else{
                 var closureSet = ['zzz'];
             }
@@ -134,20 +139,12 @@
                     }
             }
         })
-        
-        console.log('end of step 4!');
-        console.log(groupfds);
     }
 
     //eg. remove FDS of X->Y from groupfds
     //Case 1: if groupFDS contains X->YZ, change it to only X->Z
     //Case 2: if groupFDS contains Y->XZ, change it to only Y->Z 
     function removeFDFromGroup(fdsToRemove,groupfds,initialGroupFdsLength){
-
-        // console.log('came inside remove FD From Group with');
-        // console.log(fdsToRemove);
-        // console.log(groupfds);
-        // console.log(initialGroupFdsLength);
 
         for(var i=0;i<initialGroupFdsLength;i++){
 
@@ -228,11 +225,6 @@
                 for(var i =0; i < setFds.length;i++){
 
                     // // check if this FDS is transitive 
-                    // console.log("======== checking =======")
-                    // console.log(setFds[i]);
-                    // console.log("========end of checking =======")
-                    // console.log(tempfdsSet);
-                    //console.log(isTransitive(setFds[i],tempfdsSet));
                     if (isTransitive(setFds[i],tempfdsSet)){
 
                         var message = setFds[i].str() + " is a transitive attribute, removing it from the group";
@@ -242,30 +234,12 @@
                         //is transitive, remove that fds from the group 
 
                         groupfds[groupIndex].splice(i,1);
-                        // i--;
-                        // console.log("is transitive");
-                        // console.log('====================');
-                        // console.log(setFds[i]);
-                        // console.log(tempfdsSet);
-                        // console.log('end of transitive');
                     }else{
-                        // console.log("not transitive");
-                        // console.log('====================');
-                        // console.log(setFds[i]);
-                        // console.log(tempfdsSet);
-                        // console.log('end of not transitive');
                     }
-                    // else{
-                    //     console.log("not transitive");
-                    // }
 
                 }
             }
         });
-
-        console.log('end of step 5!');
-        console.log(groupfds);
-
     }
 
     //function convert the groupfds which is array of arrays of FDS into arrays of FDS
@@ -312,10 +286,6 @@
         // console.log(tempFdsSet);
 
         var closureAttr = closure(fdsToCheck.lhs,tempFdsSet);
-
-        // console.log('closure ==');
-        // console.log(closureAttr);
-        // console.log('end closure ==');
 
         //if closure contains DEF
         if(contains(fdsToCheck.rhs,closureAttr)){
@@ -376,30 +346,19 @@
                     if(pointedToFD == false){
                         transitivePointed = true;
                     }
-
-
                 }
 
             })
-            
 
             return transitivePointed;
-
-
-
         }
 
         return false;
-
     }
 
 	//Step 6 function
 		//yay simple as it is, convert all to the relation 
     Bernstein.prototype.step6= function(groupfds) {
-
-        //fds = getAllFdsFromGroupFds(groupfds);
-
-        // console.log(initialGroupfdsLength);
 
         step6JIndex = initialGroupfdsLength;
 
@@ -501,14 +460,6 @@
 
             rels.push(new R(i,tempLeftArray,tempRightArray));
         }
-
-
-        // console.log('hehe');
-        // console.log(rels);
-        // console.log('hehe');
-
-        console.log('end of step 6!');
-        console.log(groupfds);
 
     }
 

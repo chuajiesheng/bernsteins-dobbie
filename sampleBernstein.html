@@ -177,7 +177,12 @@
 
           //start bernstein calculation 
           $('#bernStep1').click( function() {
-              console.log("lol");
+              window.fds = step1(fds);
+          });
+
+
+          $('#bernStep2').click( function() {
+              window.fds = step2(fds);
           });
 
 
