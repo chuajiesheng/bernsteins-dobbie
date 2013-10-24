@@ -1,23 +1,18 @@
 //method to remove redundant attribute and FDs (covering)
 function removeCover(tempArr, rhs) {
-    var diff = [];
-	//check any elements in rhs is in closure
+     var diff = [];
+  //check any elements in rhs is in closure
     //repeated element will be removed
-    diff = _.without(rhs, tempArr);
-    if (diff != null){
+   diff = _.without(rhs, tempArr);
+     if (diff != null){
         rhs = _.difference(rhs, tempArr);
-	var rhsExtra = _.intersection(rhs, tempArr);
-	console.log(rhsExtra.length);
-	if (rhsExtra.length > 0){
-		print_message(rhsExtra + " is removed as the attribute can be derived from other FDs.");
-	}
-    } else {
+     } else {
         rhs = rhs;
-    }
-    return rhs;
-}
+     }
+    return rhs; 
+} 
 
-function cover(att, fds) {
+function cover(att, fds, z) {
     var res = [];
     // init
     if (Array.isArray(att)) {
@@ -27,32 +22,34 @@ function cover(att, fds) {
     } else {
         res.push(att);
     }
-
+    
     for (var i = 0; i < fds.length; i++) {
         var lhs = fds[i].lhs;
         var rhs = fds[i].rhs;
+        
         if (contains(lhs, res)) {
-            //remove redundant attribute from RHS
-            rhs = removeCover(res, rhs);
-            fds[i].rhs = rhs;
-            //if rhs becomes empty, whole FD is removed
-            if (rhs.length == 0){
-		print_message(fds[i].str() + " is removed as it is a FD derived from other FDs.");
-                fds.splice(i, 1);
-            } else {
+            if (lhs == fds[z].lhs) {
+                rhs = removeCover(res, rhs);
+                fds[i] = new Fd(lhs, rhs);
+                if (rhs.length == 0){
+                    fds.splice(i, 1); 
+               } else {
+                newR = uniqueAdd(res, rhs);
+                res = newR;
+                }
+            }
             newR = uniqueAdd(res, rhs);
             res = newR;
-            }
         }
     }
     return fds;
 }
 
-function covering(att, fds) {
+function covering(att, fds, i) {
     //closure for first attribute
-    var res = cover(att, fds);
+    var res = cover(att, fds, i);
     // closure with elements added in
-    var res2 = cover(res, fds);
+    var res2 = cover(res, fds, i);
     //Get all closure
     while (!arrayEqual(res, res2)) {
         res = res2;
@@ -158,6 +155,7 @@ function step1(fds) {
     return fds;
 }
 
+
 function step2(fds) {
     fds = rhsSetSubtraction(fds);
 
@@ -166,8 +164,6 @@ function step2(fds) {
         //get closure for attributes on LHS
         //then exclude LHS attributes from the closure
         var lhsClosure = closure(fds[i].lhs, fds);
-
-
         var lhsClosureEx = _.difference(lhsClosure, fds[i].lhs);
         lhsCheck = fds[i].lhs;
 
@@ -186,5 +182,11 @@ function step2(fds) {
              }
         }
     }
+  
+    /****** handles transitive dependency ******/
+    for (var i=0;i<fds.length;i++)
+    {
+        fds = covering(fds[i].lhs, fds, i);
+    } 
     return fds;
 }
