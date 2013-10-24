@@ -5,6 +5,19 @@
 
     var initialGroupfdsLength = -1;
 
+    Bernstein.prototype.convertGroupToFds = function(groupfds1){
+        
+        var tempfdsSet = new Array();
+
+        $.each(groupfds, function(groupIndex,setfds){
+            $.each(setfds,function(setIndex,fds){
+                tempfdsSet.push(fds);
+            })
+        });
+
+        return tempfdsSet;
+    }
+
     //Partition FDs into respective group
     Bernstein.prototype.step3 = function(fds) {
 
