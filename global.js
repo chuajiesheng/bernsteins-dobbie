@@ -20,3 +20,5 @@ var step6Messages = new Array();
 var rels = [];
 
 var keyResult = new Array();
+
+var step7Result=new Array();
