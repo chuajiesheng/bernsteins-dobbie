@@ -356,7 +356,7 @@ for (var k=0;k<keyResult.length;k++)
 
 
 
-    return result;
+    return groupfds;
 }
 
 
