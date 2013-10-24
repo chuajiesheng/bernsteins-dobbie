@@ -123,6 +123,41 @@ var R = function (name, key, attr) {
         }
         return s;
     }
+    this.relation = function () {
+        var s = '';
+
+        if (key.length == 0 && attr.length == 0) {
+            s += '()';
+        } else {
+            s += '(';
+
+            var isArrayOfArray = false;
+            for (var i = 0; i < key.length; i++) {
+                if (Array.isArray(key[i])) {
+                    isArrayOfArray = true;
+                }
+            }
+
+            if (isArrayOfArray) {
+                for (var i = 0; i < key.length; i++) {
+                    s += '<u>' + arrToStr(key[i]) + '</u>';
+                    if (i < key.length - 1) {
+                        s += ', ';
+                    }
+                }
+            } else {
+                s += '<u>' + arrToStr(key) + '</u>';
+            }
+
+            if (attr.length > 0) {
+                s += ', ';
+                s += arrToStr(attr);
+            }
+
+            s += ')';
+        }
+        return s;
+    }
     this.str = function () {
         var s = name;
 
