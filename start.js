@@ -6,6 +6,7 @@ function clone(init, copy) {
 }
 
 $('#startBernstein').on('click', function () {
+    $('#startBernstein').prop('disabled', true);
     console.log('start bernstein algorithm');
     clear();
 
@@ -40,6 +41,17 @@ $('#startBernstein').on('click', function () {
     print_title('Step 6');
     Bernstein.step6(groupfds);
 
+    // print result
+    print_title('Result');
+    res = '';
+    for (var i = 0; i < rels.length; i++) {
+        res += rels[i].html();
+        if (i < rels.length - 1) {
+            res += ', ';
+        }
+    }
+    print_message(res);
+
     // // reconstruct
     print_title('Checking reconstructibility');
     reconstruct(groupfds);
@@ -47,7 +59,7 @@ $('#startBernstein').on('click', function () {
     // // find all key
     print_title('Finding all possible keys');
     groupfds=step7(fds2);
-    
+
     print_title('Finding all possible Missing keys');
     groupfds=step8(fds);
 
