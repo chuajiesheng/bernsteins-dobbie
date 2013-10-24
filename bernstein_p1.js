@@ -6,8 +6,13 @@ function removeCover(tempArr, rhs) {
     diff = _.without(rhs, tempArr);
     if (diff != null){
         rhs = _.difference(rhs, tempArr);
+	var rhsExtra = _.intersection(rhs, tempArr);
+	console.log(rhsExtra.length);
+	if (rhsExtra.length > 0){
+		print_message(rhsExtra + " is removed as the attribute can be derived from other FDs.");
+	}
     } else {
-        rhs = rhs
+        rhs = rhs;
     }
     return rhs;
 }
@@ -32,6 +37,7 @@ function cover(att, fds) {
             fds[i].rhs = rhs;
             //if rhs becomes empty, whole FD is removed
             if (rhs.length == 0){
+		print_message(fds[i].str() + " is removed as it is a FD derived from other FDs.");
                 fds.splice(i, 1);
             } else {
             newR = uniqueAdd(res, rhs);
@@ -113,7 +119,7 @@ function step1(fds) {
         var lhsClosure = closure(fds[i].lhs, fds);
 
 
-        lhsClosure = _.difference(lhsClosure, fds[i].lhs);
+        var lhsClosureEx = _.difference(lhsClosure, fds[i].lhs);
         lhsCheck = fds[i].lhs;
 
         for (var j=0;j<fds.length;j++)
@@ -122,14 +128,12 @@ function step1(fds) {
             rhs = fds[j].rhs;
             //remove redundant attributes from LHS
              if(contains(lhsCheck, lhs)){
-                removedLHS = _.intersection(lhs, lhsClosure);
-                lhs = _.difference(lhs, lhsClosure);
+                removedLHS = _.intersection(lhs, lhsClosureEx);
+                lhs = _.difference(lhs, lhsClosureEx);
                  if (removedLHS.length > 0){
-                     print_message("Find the closure of attribute "+ fds[i].lhs +": " + lhsClosure);
-                     print_message("Remove redundant attribute on the LHS that is within the closure");
-                     print_message(removedLHS + " is removed from " +     fds[j].str());
+                     print_message(fds[j].str() + " contains redundant attribute, " + removedLHS + ", as LHS's closure is " + lhsClosureEx);
                      fds[j] = new Fd(lhs,rhs);
-                     print_message("Hence the FD becomes " + fds[j].str());
+                     print_message("After removing it, the FD becomes " + fds[j].str());
                  }
              }
         }
