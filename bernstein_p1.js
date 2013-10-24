@@ -27,33 +27,43 @@ function cover(att, fds, z) {
         var lhs = fds[i].lhs;
         var rhs = fds[i].rhs;
         
-        if (contains(lhs, res)) {
-            if (lhs == fds[z].lhs) {
-                rhs = removeCover(res, rhs);
-                fds[i] = new Fd(lhs, rhs);
-                if (rhs.length == 0){
-                    fds.splice(i, 1); 
-               } else {
+        if (i == z) {}
+        else{
+            if (contains(lhs, res)) {
+                if (lhs == fds[z].lhs) {
+                    rhs = removeCover(res, rhs);
+                    fds[i] = new Fd(lhs, rhs);
+                    if (rhs.length == 0){
+                        console.log("here"); 
+                        fds.splice(i, 1); 
+                   } else {
+                    newR = uniqueAdd(res, rhs);
+                    res = newR;
+                    }
+                }
                 newR = uniqueAdd(res, rhs);
                 res = newR;
-                }
             }
-            newR = uniqueAdd(res, rhs);
-            res = newR;
         }
     }
+    
+    lhs1 = fds[z].lhs;
+    rhs1 = fds[z].rhs;  
+    rhs1 = removeCover(res, rhs1);
+    fds[z] = new Fd(lhs1, rhs1);
+
     return fds;
 }
 
-function covering(att, fds, i) {
+function covering(att, fds, z) {
     //closure for first attribute
-    var res = cover(att, fds, i);
+    var res = cover(att, fds, z);
     // closure with elements added in
-    var res2 = cover(res, fds, i);
+    var res2 = cover(res, fds, z);
     //Get all closure
     while (!arrayEqual(res, res2)) {
         res = res2;
-       res2 = cover(res, fds);
+       res2 = cover(res, fds, z);
     }
     return res2;
 }
@@ -157,8 +167,8 @@ function step1(fds) {
 
 
 function step2(fds) {
-    fds = rhsSetSubtraction(fds);
-
+    //rhsSetSubtraction(fds);
+	
 	for (var i=0;i<fds.length;i++)
     {
         //get closure for attributes on LHS
@@ -187,6 +197,13 @@ function step2(fds) {
     for (var i=0;i<fds.length;i++)
     {
         fds = covering(fds[i].lhs, fds, i);
-    } 
+    }
+    
+      for (var j = 0; j < fds.length; j++) { 
+         if (fds[j].rhs.length == 0){
+               
+             fds.splice(j, 1); 
+         } 
+    }
     return fds;
 }
