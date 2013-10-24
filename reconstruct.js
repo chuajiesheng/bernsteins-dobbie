@@ -112,9 +112,20 @@ function reconstruct(groupfds) {
 
                 var allAttr = lhs.concat(rhs);
                 var r = new R('R' + rels.length, lhs, rhs);
-                rels.push(r);
 
-                print_message('New relation for missing attribute, ' + r.html());
+                var existed = false;
+                for (var k = 0; k < rels.length; k++) {
+                    if (r.relation() == rels[k].relation()) {
+                        existed = true;
+                    }
+                }
+
+                if (existed) {
+                    print_message('Using existing relation, ' + r.html() + ' for missing attribute');
+                } else {
+                    rels.push(r);
+                    print_message('New relation for missing attribute, ' + r.html());
+                }
 
                 // look forward and remove
                 console.log('looking forward');
