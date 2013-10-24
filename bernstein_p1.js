@@ -167,7 +167,7 @@ function step1(fds) {
 
 
 function step2(fds) {
-    //rhsSetSubtraction(fds);
+    rhsSetSubtraction(fds);
 	
 	for (var i=0;i<fds.length;i++)
     {
