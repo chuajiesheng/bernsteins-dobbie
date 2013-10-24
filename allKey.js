@@ -190,6 +190,12 @@ function closure(att, fds) {
     return res2;
 }
 
+function difference(big, small) {
+    // subtract small from big
+    // example: _.difference([1, 2, 3, 4, 5], [5, 2, 10]) => [1, 3, 4]
+    return _.difference(big, small);
+}
+
 
 
 
@@ -356,6 +362,132 @@ for (var k=0;k<keyResult.length;k++)
 
 
 function step8(fds) {
-    console.log("Find All key for relation");
+    console.log("Missing Key");
+    var step8Fds = groupfds;
+    var lhs=[];
+    var rhs=[];
+    var lhsKey=[];
+    var closureRelation=[];
+    var tempLhsKey=[];
+    var tempKey=[];
+    var temp=[];
+    var tempFinalKey=[];
+    var tempKR=[];
+    var temptemp=[];
+    
+
+    
+  
+
+    for ( var i=0; i<step6JIndex; i++){
+
+           lhs=step8Fds[i];
+           
+        rhs=step8Fds[i];
+        
+            if (step8Fds[i].length !=0){
+                lhs=lhs[0].lhs;
+                   rhs=rhs[0].rhs;
+            if( containsInClosure(lhs,closureRelation)){
+               closureRelation = uniqueAdd(rhs, closureRelation);
+               
+              
+
+            }
+            else
+            {
+                lhsKey= uniqueAdd(lhs,lhsKey);
+                closureRelation = uniqueAdd(rhs, closureRelation);
+                closureRelation=uniqueAdd(lhs,closureRelation);
+                
+            }
+        }
+
+            
+        }
+         for ( var i=step6JIndex; i<step8Fds.length; i++){
+
+           lhs=step8Fds[i];
+           
+        rhs=step8Fds[i];
+        
+            if (step8Fds[i].length !=0){
+                lhs=lhs[0].lhs;
+                   rhs=rhs[0].rhs;
+            if( containsInClosure(lhs,closureRelation)){
+               closureRelation = uniqueAdd(rhs, closureRelation);
+               
+              
+
+            }
+            else
+            {
+                for(var k=0;k<lhs.length;k++)
+                {
+                tempLhsKey= uniqueAdd(lhs[k],lhsKey);
+            finalKey.push(tempLhsKey);
+                closureRelation = uniqueAdd(rhs, closureRelation);
+                closureRelation=uniqueAdd(lhs[k],closureRelation);
+            }
+                
+            }
+        }
+
+            flatten(keyResult);
+        }
+
+        for (var j=0;j<finalKey.length;j++){
+            for( var i =0; i<keyResult.length;i++){
+                tempKR=keyResult[i];
+                
+
+
+                if(isSubset(finalKey[j],tempKR[0])){
+                    
+                    tempKey=difference(tempKR[0],finalKey[j] );
+
+                }
+                if(tempKey.length!=0){
+                    j=0;
+                    for(var l=0; l<keyResult.length;l++)
+                    {
+                        temp=keyResult[l];
+                        temptemp=temp[0];
+                        for(var o=0;o<temptemp.length;o++)
+                        {
+                    var p = temptemp[o].indexOf(tempKey);
+                        if(p != -1) {
+                            temp[0].splice(o, 1);
+                        }
+
+                    }
+
+                    }
+                    tempKey.length=0;
+                }
+            }
+        }
+        for (var j=0;j<finalKey.length;j++){
+            for( var i =0; i<keyResult.length;i++){
+                tempKR=keyResult[i];
+                
+                if(arrayEqual(tempKR[0],finalKey[j]))
+                {
+                    keyResult.splice(i,1);
+                    i=0;
+                }
+
+
+                
+                    
+                }
+            }
+        for (var j=0;j<keyResult.length;j++)
+        {
+            print_message("Possible Missing Key : "+ keyResult[j]);
+        }
+
+
+        return groupfds;
 
 }
