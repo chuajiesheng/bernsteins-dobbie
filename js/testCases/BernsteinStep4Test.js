@@ -1,100 +1,89 @@
-describe("Testing step 3 of Bernstein algo", function() {
+describe("Testing step 4 of Bernstein algo", function() {
 
-  it("Given: A->B and A->C and B->C and B->D, there will be 2 groups",function(){
+  it("Given: X1 X2->A D and C D->X1 X2 and A X1->B and B X2 ->C and C->A. "+
+      "Check that (1) remove D from X1 X2 -> A D, " + 
+      "(2) Group J with X1 X2 -> C D, " + 
+      "(3) remove C D -> X1 X2"
+      ,function(){
 
     var fds = new Array();
-    fds[0] = new Fd(["A"],["B"]);
-    fds[1] = new Fd(["A"],["C"]);
-    fds[2] = new Fd(["B"],["C"]);
-    fds[3] = new Fd(["B"],["D"]);
+    fds[0] = new Fd(["X1","X2"],["A","D"]);
+    fds[1] = new Fd(["C","D"],["X1","X2"]);
+    fds[2] = new Fd(["A","X1"],["B"]);
+    fds[3] = new Fd(["B","X2"],["C"]);
+    fds[3] = new Fd(["C"],["A"]);
 
     window.fds = fds;
     window.groupfds = new Array();
 
-    Bernstein.step3(fds);
-
+    Bernstein.step3(groupfds);
     var step3groupfds = window.groupfds; 
 
-    var expectedGroupfds = new Array();
+    Bernstein.step4(step3groupfds);
+    var step4groupfds = window.groupfds; 
 
+    //creating expected output
+    var expectedGroupfds = new Array();
     expectedGroupfds[0] = new Array();
-    expectedGroupfds[0][0] = new Fd(["A"],["B"]);
-    expectedGroupfds[0][1] = new Fd(["A"],["C"]);
-    
+    expectedGroupfds[0][0] = new Fd(["X1","X2"],["C","D"]);
+    expectedGroupfds[0][1] = new Fd(["C","D"],["X1","X2"]);
     expectedGroupfds[1] = new Array(); 
-    expectedGroupfds[1][0] = new Fd(["B"],["C"]);
-    expectedGroupfds[1][1] = new Fd(["B"],["D"]);
-  
-    var step3fds = Bernstein.convertGroupToFds(step3groupfds);
+    expectedGroupfds[1][0] = new Fd(["X1","X2"],["A"]);
+    expectedGroupfds[2] = new Array(); 
+    expectedGroupfds[2][0] = new Fd(["A","X1"],["B"]);
+    expectedGroupfds[3] = new Array(); 
+    expectedGroupfds[3][0] = new Fd(["B","X2"],["C"]);  
+    expectedGroupfds[4] = new Array(); 
+    expectedGroupfds[4][0] = new Fd(["C"],["A"]);
+    //end of expected output 
+
+    var step4groupfds = Bernstein.convertGroupToFds(step4groupfds);
     var expectedfds = Bernstein.convertGroupToFds(expectedGroupfds);
 
-    var result = dependencyArrayEqual(step3fds,expectedfds);
+    var result = dependencyArrayEqual(step4groupfds,expectedfds);
     expect(result).toBe(true);
 
   })
 
-  it("Given: A->B and C->B and B->D, there will be 3 groups",function(){
+  it("Given: A->B and B->C and B->D and D->B and AE->F "+
+      "Check that (1) Create group J of {B->D and D->B}, " + 
+      "(2) remove B->D and D->B from the fD." 
+      ,function(){
 
     var fds = new Array();
-    fds[0] = new Fd(["A"],["B"]);
-    fds[1] = new Fd(["C"],["B"]);
-    fds[2] = new Fd(["B"],["D"]);
+    fds[0] = new Fd(["X1","X2"],["A","D"]);
+    fds[1] = new Fd(["C","D"],["X1","X2"]);
+    fds[2] = new Fd(["A","X1"],["B"]);
+    fds[3] = new Fd(["B","X2"],["C"]);
+    fds[3] = new Fd(["C"],["A"]);
 
     window.fds = fds;
     window.groupfds = new Array();
 
-    Bernstein.step3(fds);
-
+    Bernstein.step3(groupfds);
     var step3groupfds = window.groupfds; 
 
+    Bernstein.step4(step3groupfds);
+    var step4groupfds = window.groupfds; 
+
+    //creating expected output
     var expectedGroupfds = new Array();
-
     expectedGroupfds[0] = new Array();
-    expectedGroupfds[0][0] = new Fd(["A"],["B"]);
-    
+    expectedGroupfds[0][0] = new Fd(["B"],["D"]);
+    expectedGroupfds[0][1] = new Fd(["D"],["B"]);
     expectedGroupfds[1] = new Array(); 
-    expectedGroupfds[1][0] = new Fd(["C"],["B"]);
-
+    expectedGroupfds[1][0] = new Fd(["A"],["B"]);
     expectedGroupfds[2] = new Array(); 
-    expectedGroupfds[2][0] = new Fd(["B"],["D"]);
+    expectedGroupfds[2][0] = new Fd(["B"],["C"]);
+    expectedGroupfds[3] = new Array(); 
+    expectedGroupfds[3][0] = new Fd(["A","E"],["F"]); 
     
-    var step3fds = Bernstein.convertGroupToFds(step3groupfds);
+    //end of expected output 
+    
+    var step4groupfds = Bernstein.convertGroupToFds(step4groupfds);
     var expectedfds = Bernstein.convertGroupToFds(expectedGroupfds);
 
-    var result = dependencyArrayEqual(step3fds,expectedfds);
-    expect(result).toBe(true);
-
-  })
-
-  it("Given: A->B and AC->D and ACD->B, there will be 3 groups",function(){
-
-    var fds = new Array();
-    fds[0] = new Fd(["A"],["B"]);
-    fds[1] = new Fd(["A","C"],["D"]);
-    fds[2] = new Fd(["A","C","D"],["B"]);
-
-    window.fds = fds;
-    window.groupfds = new Array();
-
-    Bernstein.step3(fds);
-
-    var step3groupfds = window.groupfds; 
-
-    var expectedGroupfds = new Array();
-
-    expectedGroupfds[0] = new Array();
-    expectedGroupfds[0][0] = new Fd(["A"],["B"]);
-    
-    expectedGroupfds[1] = new Array(); 
-    expectedGroupfds[1][0] = new Fd(["A","C"],["D"]);
-
-    expectedGroupfds[2] = new Array(); 
-    expectedGroupfds[2][0] = new Fd(["A","C","D"],["B"]);
-    
-    var step3fds = Bernstein.convertGroupToFds(step3groupfds);
-    var expectedfds = Bernstein.convertGroupToFds(expectedGroupfds);
-
-    var result = dependencyArrayEqual(step3fds,expectedfds);
+    var result = dependencyArrayEqual(step4groupfds,expectedfds);
     expect(result).toBe(true);
 
   })

@@ -33,8 +33,12 @@
   <script type="text/javascript" src="js/testCases/BernsteinStep1Test.js"></script>
   <script type="text/javascript" src="js/testCases/BernsteinStep2Test.js"></script>
   <script type="text/javascript" src="js/testCases/BernsteinStep3Test.js"></script>
+<<<<<<< HEAD
   <script type="text/javascript" src="js/testCases/BernsteinStep4Test.js"></script>
+
+=======
   <script type="text/javascript" src="js/testCases/BernsteinReconstuctTest.js"></script>
+>>>>>>> 11d261ea2037ea4fa9000dcbc35874f598cedde3
 
   <script type="text/javascript">
   (function() {
