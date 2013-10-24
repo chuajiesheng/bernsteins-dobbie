@@ -141,13 +141,33 @@ function step1(fds) {
     return fds;
 }
 
-
 function step2(fds) {
     rhsSetSubtraction(fds);
-
-    for (var i=0;i<fds.length;i++)
+	
+	for (var i=0;i<fds.length;i++)
     {
-        fds = covering(fds[i].lhs, fds);
+        //get closure for attributes on LHS
+        //then exclude LHS attributes from the closure
+        var lhsClosure = closure(fds[i].lhs, fds);
+
+
+        var lhsClosureEx = _.difference(lhsClosure, fds[i].lhs);
+        lhsCheck = fds[i].lhs;
+
+        for (var j=0;j<fds.length;j++)
+        {
+            lhs = fds[j].lhs;
+            rhs = fds[j].rhs;
+            //remove redundant attributes from LHS
+             if(contains(lhsCheck, rhs)){
+                removedRHS = _.intersection(rhs, lhsClosureEx);
+                rhs = _.difference(rhs, lhsClosureEx);
+                 if (removedRHS.length > 0){
+                     print_message(removedRHS + " is determined by " + lhsCheck + ", hence it can be removed." );
+                     fds[j] = new Fd(lhs,rhs);
+                 }
+             }
+        }
     }
-	return fds;
+    return fds;
 }
