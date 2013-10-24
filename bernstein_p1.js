@@ -81,6 +81,8 @@ function rhsSetSubtraction(fds) {
         for (var j = 0; j < sortedFds.length; j++) {
             if (arrayEqual(lhs, uniqueLHS[j])) {
                 sortedFds[j].push(fds[i]);
+                sortedFds[j] = sortedFds[j].sort();
+                sortedFds[j] = sortedFds[j].reverse();
                 break;
             }
         }
@@ -96,8 +98,16 @@ function rhsSetSubtraction(fds) {
             for (var j = 0; j < array.length; j++) {
                 if (i != j) {
                     // not myself
-                    newRHS = _.difference(rhs, array[j].rhs);
-                    if (newRHS.length != initLength) {
+                    var newRHS = [];
+                    if (rhs.length > array[j].rhs.length) {
+                        newRHS = _.difference(rhs, array[j].rhs);
+                    } else if (rhs.length < array[j].rhs.length) {
+                        newRHS = _.difference(array[j].rhs, rhs);
+                    } else {
+                        newRHS = rhs;
+                    }
+
+                    if (newRHS.length < initLength) {
                         array[i] = new Fd(array[i].lhs, newRHS);
                         console.log('fds have changed from, \''
                                     + initStr + '\' to \''
@@ -107,6 +117,13 @@ function rhsSetSubtraction(fds) {
             }
         }
     });
+
+    res = [];
+    $.each(sortedFds, function(index, array) {
+        res = res.concat(array);
+    });
+
+    return res;
 }
 
 function step1(fds) {
@@ -142,8 +159,8 @@ function step1(fds) {
 }
 
 function step2(fds) {
-    rhsSetSubtraction(fds);
-	
+    fds = rhsSetSubtraction(fds);
+
 	for (var i=0;i<fds.length;i++)
     {
         //get closure for attributes on LHS
