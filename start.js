@@ -46,5 +46,9 @@ $('#startBernstein').on('click', function () {
 
     // // find all key
     print_title('Finding all possible keys');
+    groupfds=step7(fds2);
+    
+    print_title('Finding all possible Missing keys');
+    groupfds=step8(fds);
 
 });
