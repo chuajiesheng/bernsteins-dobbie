@@ -45,6 +45,25 @@ function uniqueAdd(a, b) {
     return res;
 }
 
+// add a to set only if the FD is unique
+function uniqueAddDependency(a, set) {
+    var exist = false;
+
+    if (Array.isArray(set)) {
+        for (var i = 0; i < set.length; i++) {
+            if (set[i].str() == a.str()) {
+                exist = true;
+                break;
+            }
+        }
+    }
+
+    if (!exist) {
+        set[set.length] = a;
+    }
+    return set;
+}
+
 function close(att, fds) {
     var res = [];
 

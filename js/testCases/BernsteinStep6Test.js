@@ -1,9 +1,7 @@
-describe("Testing step 4 of Bernstein algo", function() {
+describe("Testing step 6 of Bernstein algo", function() {
 
-  it("Given: X1 X2->A D and C D->X1 X2 and A X1->B and B X2 ->C and C->A. "+
-      "Check that (1) remove D from X1 X2 -> A D, " + 
-      "(2) Group J with X1 X2 -> C D, " + 
-      "(3) remove C D -> X1 X2"
+  it("Given: {X1 X2 ->C D and C D ->X1 X2} and {A X1->B} and {B X2 ->C} and {C->A}."+
+    "check that X1 and X2 both are independent key for relation {X1, X2, C, D}"
       ,function(){
 
     var fds = new Array();
@@ -21,6 +19,12 @@ describe("Testing step 4 of Bernstein algo", function() {
 
     Bernstein.step4(step3groupfds);
     var step4groupfds = window.groupfds; 
+
+    Bernstein.step5(step4groupfds);
+    var step5groupfds = window.groupfds;
+
+    Bernstein.step6(step5groupfds);
+    var step6groupfds = window.groupfds; 
 
     //creating expected output
     var expectedGroupfds = new Array();
@@ -60,7 +64,7 @@ describe("Testing step 4 of Bernstein algo", function() {
     window.fds = fds;
     window.groupfds = new Array();
 
-    Bernstein.step3(fds);
+    Bernstein.step3(groupfds);
     var step3groupfds = window.groupfds; 
 
     Bernstein.step4(step3groupfds);
